@@ -20,7 +20,7 @@ Stock predictor analysis involves using various techniques, including statistica
 
 ## Stock predictor and data analysis
 
-- Debasish Side Command
+- Debasish Side Command for pushing
 
 ```text
 git clone https://github.com/debasishray16/StockPredictor.git
@@ -29,6 +29,12 @@ git status
 git add .
 git commit -m "First commit"
 git push origin main
+```
+
+- Debasish Side Command for pulling
+
+```text
+git pull origin main
 ```
 
 - Utkarsh Side Command
