@@ -30,3 +30,14 @@ git add .
 git commit -m "First commit"
 git push origin main
 ```
+
+- Utkarsh Side Command
+
+'''text
+git clone https://github.com/Rutkarsh08/StockPredictor.git
+
+git status
+git add.
+git commit -m "First commit"
+git push origin main
+'''
