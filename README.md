@@ -37,7 +37,7 @@ git push origin main
 git pull origin main
 ```
 
-- Utkarsh Side Command
+- Utkarsh Side Command for pushing
 
 ```
 git clone https://github.com/Rutkarsh08/StockPredictor.git
@@ -46,4 +46,10 @@ git status
 git add.
 git commit -m "First commit"
 git push origin main
+```
+
+- Utkarsh Side Command for pulling
+
+```
+git pull origin main
 ```
