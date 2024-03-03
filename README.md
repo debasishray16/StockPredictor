@@ -54,3 +54,8 @@ git push origin main
 ```
 git pull origin main
 ```
+
+**Notice: If you are making any changes and name the commit as "(filename): update(no.)"**
+
+- If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
+- If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
