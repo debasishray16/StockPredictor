@@ -37,7 +37,7 @@ git push origin main
 git pull origin main
 ```
 
-- Utkarsh Side Command
+- Utkarsh Side Command for pushing
 
 ```
 git clone https://github.com/Rutkarsh08/StockPredictor.git
@@ -49,7 +49,8 @@ git push origin main
 ```
 
 
-**Notice: If you are making any changes and name the commit as "(filename): update(no.)"**
+- Utkarsh Side Command for pulling
 
-- If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
-- If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
+```
+git pull origin main
+```
