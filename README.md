@@ -56,13 +56,25 @@ git push origin main
 git pull origin main
 ```
 
+- Amal Side Command for pushing
+
+```
+git clone https://github.com/Rutkarsh08/StockPredictor.git
+
+git status
+git add.
+git commit -m "First commit"
+git push origin main
+```
+
+
+- Amal Side Command for pulling
+
+```
+git pull origin main
+```
+
 **Notice: If you are making any changes and name the commit as "(filename): update(no.)"**
 
 - If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
 - If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
-
-Amal Changes
-
-
-
-
