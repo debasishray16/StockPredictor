@@ -60,3 +60,9 @@ git pull origin main
 
 - If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
 - If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
+
+Amal Changes
+
+
+
+
