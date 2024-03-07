@@ -1,5 +1,6 @@
 # Stock Prediction System
 
+
 Stock predictor analysis involves using various techniques, including statistical analysis, machine learning, and predictive modeling, to forecast future stock prices based on historical data. The primary objective of stock predictor analysis is to provide investors and traders with insights into potential price movements, helping them make more informed decisions about buying, selling, or holding stocks.
 
 1. **Data Collection**: The first step in stock predictor analysis is gathering historical stock data, including prices (e.g., opening, closing, high, low), trading volumes, and other relevant metrics. Data can be sourced from financial databases, APIs provided by stock exchanges, or financial news websites.
