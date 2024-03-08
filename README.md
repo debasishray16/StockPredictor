@@ -21,6 +21,17 @@ Stock predictor analysis involves using various techniques, including statistica
 
 ## Stock predictor and data analysis
 
+
+
+
+
+### Model Used
+
+1. Scikit Learnng
+2. Matplotlib
+3. 
+
+
 - Debasish Side Command for pushing
 
 ```text
