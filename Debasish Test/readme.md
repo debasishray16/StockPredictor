@@ -21,22 +21,35 @@ import matplotlib.pyplot as plt
 import pandas_datareader as data
 ```
 
+- Streamlit lets you transform Python scripts into interactive web apps in minutes, instead of weeks. Build dashboards, generate reports, or create chat apps. Once you’ve created an app, you can use our Community Cloud platform to deploy, manage, and share your app.
+
 ```bash
+pip install streamlit
 ```
 
 ```bash
+pip install tensorflow
 ```
 
 ```bash
+pip install keras
+```
+
+- normalize ownership, permissions, order of directory entries and tar format in distutils-generated archives
+
+```bash
+pip install distutils644
 ```
 
 ```bash
+pip install sklearn3
+pip install sklearn-preprocessing
 ```
 
-```bash
-```
+- If it's asking for specific permissions , need to be given to the cmd for installing. Use this:
 
 ```bash
+pip install --user scikit-learn preprocessing
 ```
 
 ```bash
