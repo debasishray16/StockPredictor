@@ -55,5 +55,12 @@ pip install --user scikit-learn preprocessing
 ```bash
 ```
 
+- Before running in terminal, run the following command
+
 ```bash
+set TF_ENABLE_ONEDNN_OPTS=0
+```
+
+```bash
+streamlit run app.py
 ```
