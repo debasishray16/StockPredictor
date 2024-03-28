@@ -1,18 +1,22 @@
 import pandas_datareader.data as web
-from tensorflow.python.framework import ops
-import streamlit as st
-from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import pandas_datareader as data
-from keras.models import load_model
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
-import tensorflow as tf
+
 import keras
 from keras.initializers import Orthogonal
 from keras.optimizers import SGD
+from keras.models import load_model
+
+import streamlit as st
+
+from sklearn.preprocessing import MinMaxScaler
+
+import tensorflow as tf
+from tensorflow.python.framework import ops
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
 
