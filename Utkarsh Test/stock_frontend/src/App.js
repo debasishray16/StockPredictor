@@ -3,9 +3,11 @@ import './App.css';
 
 function App() {
   return (
-      <h1 className="text-6xl font-bold underline">
-          Hello world!
-      </h1>
+    <div className="flex">
+      <div></div>
+      <div></div>
+      
+    </div>
   );
 }
 
