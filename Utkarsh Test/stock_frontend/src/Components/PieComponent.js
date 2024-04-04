@@ -1,5 +1,5 @@
 import React from 'react'
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const data = [
     { name: 'Group A', value: 400 },
@@ -42,6 +42,22 @@ const PieComponent = () => {
             ))}
           </Pie>
         </PieChart>
+        <div className='grid grid-cols-4'>
+        {
+          data.map((item,index)=>(
+            <p key={index} className='cursor-pointer font-bold'>{item.name}</p>
+          ))
+        }
+        </div>
+        <div className='grid grid-cols-4 mt-[15px]'>
+        {
+          COLORS.map((item,index)=>(
+            <div className='h-[30px] w-[30px]' style={{backgroundColor:item}} key={index}>
+
+            </div>
+          ))
+        }
+        </div>
     </div>
   )
 }
