@@ -6,13 +6,13 @@ import Main from '../Components/Main'
 const Router = () => {
   return (
     <div>
-        <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<App />}>
-                <Route index element={<Main />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App />}>
+            <Route index element={<Main />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
