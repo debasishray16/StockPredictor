@@ -32,7 +32,7 @@ end = '2019-12-31'
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker', 'AAPL')
+user_input = st.text_input('Enter Stock Ticker', 'GOOG')
 
 df = web.DataReader(user_input, 'stooq', start, end)
 print(df)
