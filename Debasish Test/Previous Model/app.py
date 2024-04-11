@@ -91,9 +91,23 @@ st.subheader("Closing Price V/S Time Chart with 100MA and 200MA")
 ma100 = df.Close.rolling(100).mean()
 ma200 = df.Close.rolling(200).mean()
 fig = plt.figure(figsize=(12, 6))
-plt.plot(ma100, 'r')
-plt.plot(ma200, 'g')
-plt.plot(df.Close, 'b')
+fig.patch.set_facecolor('#A59DDF')
+
+ax = plt.axes()
+ax.set_facecolor('#211970')
+
+plt.grid(True, linestyle='--', color='#626784')
+plt.xticks(rotation=45)
+
+
+plt.plot(df.Close, '#A720C4', label='Closing Price')
+plt.plot(ma100, 'g', label='Mean (100 val)')  # this is the mean of 100 values
+plt.plot(ma200, 'r', label='Mean (200 val)')  # this is the mean of 200 values
+
+plt.legend()
+plt.xlabel('Date')
+plt.ylabel('Closing Price ($)')
+
 st.pyplot(fig)
 
 
@@ -136,10 +150,19 @@ y_test = y_test * scale_factor
 # Final Graph
 st.subheader('Prediction V/S Original')
 fig2 = plt.figure(figsize=(12, 6))
-plt.plot(y_test, 'b', label="Original price")
+fig2.patch.set_facecolor('#A59DDE')
+
+ax = plt.axes()
+ax.set_facecolor('#C7E1F4')
+
+plt.grid(True, linestyle='--', color='#626784')
+plt.plot(y_test, 'g', label="Original price")
 plt.plot(y_predicted, 'r', label="Predicted price")
-plt.xlabel('Time')
-plt.ylabel('Price')
+
+plt.title("Plot between Original and Predicted Stock Price")
+plt.xlabel('No of Days')
+plt.ylabel('Stock Price($)')
 plt.legend()
 plt.show()
+
 st.pyplot(fig2)
