@@ -1,6 +1,10 @@
+import os
+import streamlit as st
+
 import pandas_datareader.data as web
 import numpy as np
 import pandas as pd
+
 import matplotlib.pyplot as plt
 import pandas_datareader as data
 
@@ -8,9 +12,6 @@ import keras
 from keras.initializers import Orthogonal
 from keras.optimizers import SGD
 from keras.models import load_model
-
-import streamlit as st
-
 from sklearn.preprocessing import MinMaxScaler
 
 import tensorflow as tf
@@ -19,6 +20,7 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
+os.environ['TF_USE_LEGACY_KERAS'] = '1'
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
@@ -26,7 +28,7 @@ ops.reset_default_graph()
 
 print(keras.__version__)
 start = '2010-01-01'
-end = '2019-12-31'
+end = '2021-12-31'
 
 
 st.title('Stock Trend Prediction')
@@ -38,56 +40,27 @@ df = web.DataReader(user_input, 'stooq', start, end)
 print(df)
 
 # Describing Data
-st.subheader('Data from 2010 - 2019')
+st.subheader('Data from 2010 - 2021')
 st.write(df.describe())
 
 
 st.subheader("Closing Price V/S Time Chart")
 
 fig = plt.figure(figsize=(12, 6))
-
-ax=plt.axes()
-ax.set_facecolor('#C7E1F4')
-
-plt.plot(df.Close, '#FF8F00', label='Closing Price')
+plt.plot(df.Close)
 plt.title('Multiple Lines Plot')
-plt.legend()
-plt.xlabel('Year')
-plt.ylabel('Closing Price (USD)')
-plt.xticks(rotation=45)
-
-plt.grid(True, linestyle='--', color='#BDBDBD')
-plt.tight_layout()
-
 st.pyplot(fig)
-
-
-
-
 
 st.subheader("Closing Price V/S Time Chart with 100MA")
-
 ma100 = df.Close.rolling(100).mean()
 fig = plt.figure(figsize=(12, 6))
-ax = plt.axes()
-ax.set_facecolor('#C7E1F4')
-
-plt.grid(True, linestyle='--', color='#BDBDBD')
-plt.tight_layout()
-
 plt.title('Multiple Lines Plot')
-plt.plot(df.Close, '#FF8F00', label='Closing Price')
-# this is the mean of 100 values
-plt.plot(ma100, 'g--', label='Mean (100 val)')
-
-plt.legend()
-plt.xlabel('Year')
-plt.ylabel('Closing Price (USD)')
-
+plt.plot(ma100)
+plt.plot(df.Close)
 st.pyplot(fig)
 
 
-st.subheader("Closing Price V/S Time Chart with 100MA and 200MA")
+st.subheader("Closing Price V/S Time Chart with 100m and 200m")
 ma100 = df.Close.rolling(100).mean()
 ma200 = df.Close.rolling(200).mean()
 fig = plt.figure(figsize=(12, 6))
@@ -106,7 +79,7 @@ data_training_array = scaler.fit_transform(data_training)
 
 # Load Model
 
-model = tf.keras.models.load_model('keras_model.h5', compile=False)
+model = tf.keras.models.load_model('keras_model_last.h5', compile=False)
 
 # Testing part
 past_100_days = data_training.tail(100)
