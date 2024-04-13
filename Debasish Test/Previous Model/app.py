@@ -20,6 +20,7 @@ from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2
 import tensorflow.compat.v2 as tf
 
 
+
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
@@ -37,9 +38,9 @@ st.set_page_config(
 
 st.title('Stock Trend Prediction')
 
+
 # Taking input from user.
 user_input = st.text_input('Enter Stock Ticker', "AAPL")
-
 df = web.DataReader(user_input, 'stooq', start, end)
 
 
@@ -50,6 +51,7 @@ tab1, tab2, tab3 = st.tabs(
 with tab1:
     import streamlit.components.v1 as components
     st.subheader("Ticker List")
+    
     # Add subtitle
     SUB_TITLE = """
     <!DOCTYPE html>
@@ -183,26 +185,27 @@ with tab1:
 
 with tab2:
     st.subheader("Close-Feature")
-    st.subheader("Fetched Datset of " + user_input + " Ticker")
+    st.subheader("Dataset Overview of " + user_input + " Ticker")
     st.write(df)
+    st.text(df.size)
 
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    
     # Describing Data
-    st.subheader('Data from 2010 - Latest')
+    st.subheader('Data Overview from 2010 - Latest')
+    st.text("This section gives the overview of the dataset which shows different columns.")
     st.write(df.describe())
 
-    #
+    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
 
-    #
-
-    st.subheader("Closing Price V/S Time Chart")
-
+    st.subheader("[Closing Price V/S Time] Chart")
     fig = plt.figure(figsize=(12, 6))
 
     ax = plt.axes()
     ax.set_facecolor('#C7E1F4')
 
     plt.plot(df.Close, '#FF8F00', label='Closing Price')
-    plt.title('Multiple Lines Plot')
+    plt.title(user_input+ ' Stock plot')
     plt.legend()
     plt.xlabel('Year')
     plt.ylabel('Closing Price (USD)')
@@ -210,10 +213,11 @@ with tab2:
 
     plt.grid(True, linestyle='--', color='#BDBDBD')
     plt.tight_layout()
-
     st.pyplot(fig)
 
-    st.subheader("Closing Price V/S Time Chart with 100MA")
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    
+    st.subheader("[Closing Price V/S Time] Chart with 100MA")
 
     ma100 = df.Close.rolling(100).mean()
     fig = plt.figure(figsize=(12, 6))
@@ -223,7 +227,7 @@ with tab2:
     plt.grid(True, linestyle='--', color='#BDBDBD')
     plt.tight_layout()
 
-    plt.title('Multiple Lines Plot')
+    plt.title('Multiple Lines '+ user_input+ ' Stock plot')
     plt.plot(df.Close, '#FF8F00', label='Closing Price')
     # this is the mean of 100 values
     plt.plot(ma100, 'g--', label='Mean (100 val)')
@@ -234,7 +238,9 @@ with tab2:
 
     st.pyplot(fig)
 
-    st.subheader("Closing Price V/S Time Chart with 100MA and 200MA")
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    
+    st.subheader("[Closing Price V/S Time] Chart with 100MA and 200MA")
     ma100 = df.Close.rolling(100).mean()
     ma200 = df.Close.rolling(200).mean()
     fig = plt.figure(figsize=(12, 6))
@@ -290,7 +296,11 @@ with tab2:
     scale_factor = 1/scaler[0]
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
+    
 
+
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    
     # Final Graph
     st.subheader('Prediction V/S Original')
     fig2 = plt.figure(figsize=(12, 6))
