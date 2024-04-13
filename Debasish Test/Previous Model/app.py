@@ -28,6 +28,22 @@ print(keras.__version__)
 start = '2010-01-01'
 end = '2019-12-31'
 
+# Page Layout
+st.set_page_config(
+    page_title="Stock-Prediction System",
+    layout="centered"
+)
+
+
+tab1, tab2 = st.tabs(
+    ["Close-Feature", "Open-Feature"]
+)
+with tab1:
+    st.subheader("Close-Feature")
+
+with tab2:
+    st.subheader("Open-Feature")
+
 
 st.title('Stock Trend Prediction')
 
@@ -35,18 +51,25 @@ st.title('Stock Trend Prediction')
 user_input = st.text_input('Enter Stock Ticker', 'GOOG')
 
 df = web.DataReader(user_input, 'stooq', start, end)
-print(df)
+
+st.subheader("Fetched Datset")
+st.write(df)
+
 
 # Describing Data
-st.subheader('Data from 2010 - 2019')
+st.subheader('Data from 2010 - Latest')
 st.write(df.describe())
 
+#
+
+
+#
 
 st.subheader("Closing Price V/S Time Chart")
 
 fig = plt.figure(figsize=(12, 6))
 
-ax=plt.axes()
+ax = plt.axes()
 ax.set_facecolor('#C7E1F4')
 
 plt.plot(df.Close, '#FF8F00', label='Closing Price')
@@ -60,9 +83,6 @@ plt.grid(True, linestyle='--', color='#BDBDBD')
 plt.tight_layout()
 
 st.pyplot(fig)
-
-
-
 
 
 st.subheader("Closing Price V/S Time Chart with 100MA")
