@@ -35,154 +35,282 @@ st.set_page_config(
 )
 
 
-tab1, tab2 = st.tabs(
-    ["Close-Feature", "Open-Feature"]
-)
-with tab1:
-    st.subheader("Close-Feature")
-
-with tab2:
-    st.subheader("Open-Feature")
-
-
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker', 'GOOG')
+user_input = st.text_input('Enter Stock Ticker', "AAPL")
 
 df = web.DataReader(user_input, 'stooq', start, end)
 
-st.subheader("Fetched Datset")
-st.write(df)
+
+tab1, tab2, tab3 = st.tabs(
+    ["Ticker Info.", "Close-Feature", "Open-Feature"]
+)
+
+with tab1:
+    import streamlit.components.v1 as components
+    st.subheader("Ticker List")
+    # Add subtitle
+    SUB_TITLE = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stock Tickers Info</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background-color: #f4f4f9;
+            }
+            table {
+                width: 80%;
+                margin: 20px auto;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 12px;
+                border: 1px solid #ccc;
+                text-align: left;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            .container {
+                width: 90%;
+                margin: auto;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Stock Tickers Information</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Company Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AAPL</td>
+                        <td>Apple Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>GOOGL</td>
+                        <td>Alphabet Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>AMZN</td>
+                        <td>Amazon.com Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>JPM</td>
+                        <td>JPMorgan Chase & Co.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>MPZ</td>
+                        <td>Medical Properties Trust, Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>ARCC</td>
+                        <td>Ares Capital Corporation</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>MMM</td>
+                        <td>3M Company</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>MGK</td>
+                        <td>Vanguard Mega Cap Growth Index Fund</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>IEP</td>
+                        <td>Icahn Enterprises L.P.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>AAP</td>
+                        <td>Advance Auto Parts, Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>ACEL</td>
+                        <td>Accel Entertainment, Inc.</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>ACM</td>
+                        <td>Icahn Enterprises L.P.</td>
+                    </tr>
+                    <tr>
+                        <td>ABDE</td>
+                        <td>Adobe Inc.</td>
+                    </tr>
+                    <tr>
+                        <td>ADSK</td>
+                        <td>Autodesk, Inc.</td>
+                    </tr>
+                    <tr>
+                        <td>ATO</td>
+                        <td>Atmos Energy Corporation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>
+
+    """
+    components.html(SUB_TITLE, height=1000)
+
+with tab2:
+    st.subheader("Close-Feature")
+    st.subheader("Fetched Datset of " + user_input + " Ticker")
+    st.write(df)
+
+    # Describing Data
+    st.subheader('Data from 2010 - Latest')
+    st.write(df.describe())
+
+    #
+
+    #
+
+    st.subheader("Closing Price V/S Time Chart")
+
+    fig = plt.figure(figsize=(12, 6))
+
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.plot(df.Close, '#FF8F00', label='Closing Price')
+    plt.title('Multiple Lines Plot')
+    plt.legend()
+    plt.xlabel('Year')
+    plt.ylabel('Closing Price (USD)')
+    plt.xticks(rotation=45)
+
+    plt.grid(True, linestyle='--', color='#BDBDBD')
+    plt.tight_layout()
+
+    st.pyplot(fig)
+
+    st.subheader("Closing Price V/S Time Chart with 100MA")
+
+    ma100 = df.Close.rolling(100).mean()
+    fig = plt.figure(figsize=(12, 6))
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.grid(True, linestyle='--', color='#BDBDBD')
+    plt.tight_layout()
+
+    plt.title('Multiple Lines Plot')
+    plt.plot(df.Close, '#FF8F00', label='Closing Price')
+    # this is the mean of 100 values
+    plt.plot(ma100, 'g--', label='Mean (100 val)')
+
+    plt.legend()
+    plt.xlabel('Year')
+    plt.ylabel('Closing Price (USD)')
+
+    st.pyplot(fig)
+
+    st.subheader("Closing Price V/S Time Chart with 100MA and 200MA")
+    ma100 = df.Close.rolling(100).mean()
+    ma200 = df.Close.rolling(200).mean()
+    fig = plt.figure(figsize=(12, 6))
+    fig.patch.set_facecolor('#A59DDF')
+
+    ax = plt.axes()
+    ax.set_facecolor('#211970')
+
+    plt.grid(True, linestyle='--', color='#626784')
+    plt.xticks(rotation=45)
+
+    plt.plot(df.Close, '#A720C4', label='Closing Price')
+    # this is the mean of 100 values
+    plt.plot(ma100, 'g', label='Mean (100 val)')
+    # this is the mean of 200 values
+    plt.plot(ma200, 'r', label='Mean (200 val)')
+
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price ($)')
+
+    st.pyplot(fig)
+
+    # splitting the data into training and testing
+    data_training = pd.DataFrame(df['Close'][0:int(len(df)*0.70)])
+    data_testing = pd.DataFrame(df['Close'][int(len(df)*0.70):int(len(df))])
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    data_training_array = scaler.fit_transform(data_training)
+
+    # Load Model
+
+    model = tf.keras.models.load_model('keras_model.h5', compile=False)
+
+    # Testing part
+    past_100_days = data_training.tail(100)
+    final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
+
+    input_data = scaler.fit_transform(final_df)
+
+    x_test = []
+    y_test = []
+
+    for i in range(100, input_data.shape[0]):
+        x_test.append(input_data[i-100: i])
+        y_test.append(input_data[i, 0])
+
+    x_test, y_test = np.array(x_test), np.array(y_test)
+    y_predicted = model.predict(x_test)
+
+    scaler = scaler.scale_
+
+    scale_factor = 1/scaler[0]
+    y_predicted = y_predicted * scale_factor
+    y_test = y_test * scale_factor
+
+    # Final Graph
+    st.subheader('Prediction V/S Original')
+    fig2 = plt.figure(figsize=(12, 6))
+    fig2.patch.set_facecolor('#A59DDE')
+
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.grid(True, linestyle='--', color='#626784')
+    plt.plot(y_test, 'g', label="Original price")
+    plt.plot(y_predicted, 'r', label="Predicted price")
+
+    plt.title("Plot between Original and Predicted Stock Price")
+    plt.xlabel('No of Days')
+    plt.ylabel('Stock Price($)')
+    plt.legend()
+    plt.show()
+
+    st.pyplot(fig2)
 
 
-# Describing Data
-st.subheader('Data from 2010 - Latest')
-st.write(df.describe())
-
-#
-
-
-#
-
-st.subheader("Closing Price V/S Time Chart")
-
-fig = plt.figure(figsize=(12, 6))
-
-ax = plt.axes()
-ax.set_facecolor('#C7E1F4')
-
-plt.plot(df.Close, '#FF8F00', label='Closing Price')
-plt.title('Multiple Lines Plot')
-plt.legend()
-plt.xlabel('Year')
-plt.ylabel('Closing Price (USD)')
-plt.xticks(rotation=45)
-
-plt.grid(True, linestyle='--', color='#BDBDBD')
-plt.tight_layout()
-
-st.pyplot(fig)
-
-
-st.subheader("Closing Price V/S Time Chart with 100MA")
-
-ma100 = df.Close.rolling(100).mean()
-fig = plt.figure(figsize=(12, 6))
-ax = plt.axes()
-ax.set_facecolor('#C7E1F4')
-
-plt.grid(True, linestyle='--', color='#BDBDBD')
-plt.tight_layout()
-
-plt.title('Multiple Lines Plot')
-plt.plot(df.Close, '#FF8F00', label='Closing Price')
-# this is the mean of 100 values
-plt.plot(ma100, 'g--', label='Mean (100 val)')
-
-plt.legend()
-plt.xlabel('Year')
-plt.ylabel('Closing Price (USD)')
-
-st.pyplot(fig)
-
-
-st.subheader("Closing Price V/S Time Chart with 100MA and 200MA")
-ma100 = df.Close.rolling(100).mean()
-ma200 = df.Close.rolling(200).mean()
-fig = plt.figure(figsize=(12, 6))
-fig.patch.set_facecolor('#A59DDF')
-
-ax = plt.axes()
-ax.set_facecolor('#211970')
-
-plt.grid(True, linestyle='--', color='#626784')
-plt.xticks(rotation=45)
-
-
-plt.plot(df.Close, '#A720C4', label='Closing Price')
-plt.plot(ma100, 'g', label='Mean (100 val)')  # this is the mean of 100 values
-plt.plot(ma200, 'r', label='Mean (200 val)')  # this is the mean of 200 values
-
-plt.legend()
-plt.xlabel('Date')
-plt.ylabel('Closing Price ($)')
-
-st.pyplot(fig)
-
-
-# splitting the data into training and testing
-data_training = pd.DataFrame(df['Close'][0:int(len(df)*0.70)])
-data_testing = pd.DataFrame(df['Close'][int(len(df)*0.70):int(len(df))])
-
-scaler = MinMaxScaler(feature_range=(0, 1))
-data_training_array = scaler.fit_transform(data_training)
-
-# Load Model
-
-model = tf.keras.models.load_model('keras_model.h5', compile=False)
-
-# Testing part
-past_100_days = data_training.tail(100)
-final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
-
-input_data = scaler.fit_transform(final_df)
-
-
-x_test = []
-y_test = []
-
-for i in range(100, input_data.shape[0]):
-    x_test.append(input_data[i-100: i])
-    y_test.append(input_data[i, 0])
-
-
-x_test, y_test = np.array(x_test), np.array(y_test)
-y_predicted = model.predict(x_test)
-
-scaler = scaler.scale_
-
-scale_factor = 1/scaler[0]
-y_predicted = y_predicted * scale_factor
-y_test = y_test * scale_factor
-
-
-# Final Graph
-st.subheader('Prediction V/S Original')
-fig2 = plt.figure(figsize=(12, 6))
-fig2.patch.set_facecolor('#A59DDE')
-
-ax = plt.axes()
-ax.set_facecolor('#C7E1F4')
-
-plt.grid(True, linestyle='--', color='#626784')
-plt.plot(y_test, 'g', label="Original price")
-plt.plot(y_predicted, 'r', label="Predicted price")
-
-plt.title("Plot between Original and Predicted Stock Price")
-plt.xlabel('No of Days')
-plt.ylabel('Stock Price($)')
-plt.legend()
-plt.show()
-
-st.pyplot(fig2)
+with tab3:
+    st.subheader("Open-Feature")

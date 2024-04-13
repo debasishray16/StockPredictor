@@ -4,13 +4,14 @@ import streamlit as st
 import pandas_datareader.data as web
 import numpy as np
 import pandas as pd
-
+import datetime
 import matplotlib.pyplot as plt
 import pandas_datareader as data
 
 import keras
 from keras.initializers import Orthogonal
 from keras.optimizers import SGD
+
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
@@ -20,15 +21,16 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
-os.environ['TF_USE_LEGACY_KERAS'] = '1'
+
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
+
 
 ops.reset_default_graph()
 
 print(keras.__version__)
 start = '2010-01-01'
-end = '2021-12-31'
+end = datetime.date.today()
 
 
 st.title('Stock Trend Prediction')
@@ -40,7 +42,7 @@ df = web.DataReader(user_input, 'stooq', start, end)
 print(df)
 
 # Describing Data
-st.subheader('Data from 2010 - 2021')
+st.subheader('Data from 2010 - Update')
 st.write(df.describe())
 
 
@@ -79,7 +81,8 @@ data_training_array = scaler.fit_transform(data_training)
 
 # Load Model
 
-model = tf.keras.models.load_model('keras_model_last.h5', compile=False)
+model = tf.keras.models.load_model(
+    'keras_model_real_time_data(epoch-100).h5', compile=False)
 
 # Testing part
 past_100_days = data_training.tail(100)
