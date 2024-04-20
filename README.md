@@ -8,6 +8,13 @@ To run streamlit application:
 streamlit run app.py
 ```
 
+To Access frontend side of project, cd into Utkarsh Test.
+
+To Access backend side of project, cd into Debasish Test and Amal Test.
+
+To Access and run project as a whole, cd into final_project.
+
+
 ## Introduction
 
 Stock predictor analysis involves using various techniques, including statistical analysis, machine learning, and predictive modeling, to forecast future stock prices based on historical data. The primary objective of stock predictor analysis is to provide investors and traders with insights into potential price movements, helping them make more informed decisions about buying, selling, or holding stocks.
@@ -27,71 +34,3 @@ Stock predictor analysis involves using various techniques, including statistica
 7. **Prediction**: After the model is trained and evaluated, it can be used to make predictions on new or unseen data. Predicted stock prices are generated based on the model's learned patterns and relationships from the historical data.
 
 8. **Deployment and Monitoring**: Predictive models can be deployed in real-world trading systems or investment platforms to provide automated decision support for investors and traders. It's essential to monitor the model's performance over time and retrain it periodically with updated data to ensure its accuracy and relevance.
-
-## Stock predictor and data analysis
-
-### Model Used
-
-1. Scikit Learnng
-2. Matplotlib
-3.
-
-- Debasish Side Command for pushing
-
-```text
-git clone https://github.com/debasishray16/StockPredictor.git
-
-git status
-git add .
-git commit -m "First commit"
-git push origin main
-```
-
-- Debasish Side Command for pulling
-
-```text
-git pull origin main
-```
-
-- Utkarsh Side Command for pushing
-
-```
-git clone https://github.com/Rutkarsh08/StockPredictor.git
-
-git status
-git add.
-git commit -m "First commit"
-git push origin main
-```
-
-- Utkarsh Side Command for pulling
-
-```
-git pull origin main
-```
-
-- Amal Side Command for pushing
-
-```
-git clone https://github.com/Rutkarsh08/StockPredictor.git
-
-git status
-git add.
-git commit -m "First commit"
-git push origin main
-```
-
-- Amal Side Command for pulling
-
-```
-git pull origin main
-```
-
-- If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
-- If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
-
-To Access frontend side of project, cd into Utkarsh Test.
-
-To Access backend side of project, cd into Debasish Test and Amal Test.
-
-To Access and run project as a whole, cd into final_project.
