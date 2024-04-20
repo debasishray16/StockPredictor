@@ -2,7 +2,7 @@
 
 To run streamlit application:
 
-1. Go to file directory  ..Debasish Test\Previous Model
+1. Go to file directory ..Debasish Test\Previous Model
 
 ```bash
 streamlit run app.py
@@ -86,3 +86,12 @@ git push origin main
 ```
 git pull origin main
 ```
+
+- If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
+- If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
+
+To Access frontend side of project, cd into Utkarsh Test.
+
+To Access backend side of project, cd into Debasish Test and Amal Test.
+
+To Access and run project as a whole, cd into final_project.

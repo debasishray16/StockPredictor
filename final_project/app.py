@@ -20,7 +20,7 @@ from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2
 import tensorflow.compat.v2 as tf
 from flask import Flask, request
 
-input_data=''
+input_data_company=''
 app = Flask(__name__)
 
 @app.route('/api/process-data', methods=['POST'])
@@ -30,8 +30,8 @@ def process_data():
 
     input_data = data.get('inputData')
 
-if input_data is None or input_data=='':
-    input_data = "AAPL"
+if input_data_company is None or input_data_company=='':
+    input_data_company = "AAPL"
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
@@ -43,7 +43,7 @@ end = '2019-12-31'
 
 # Page Layout
 st.set_page_config(
-    page_title="Stock-Prediction System",
+    page_title="Stock Market Predictor",
     layout="centered"
 )
 
@@ -52,7 +52,7 @@ st.title('Stock Trend Prediction')
 
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker', input_data)
+user_input = st.text_input('Enter Stock Ticker', input_data_company)
 df = web.DataReader(user_input, 'stooq', start, end)
 
 
@@ -268,7 +268,7 @@ with tab2:
     plt.plot(ma100, 'g', label='Mean (100 val)')
     # this is the mean of 200 values
     plt.plot(ma200, 'r', label='Mean (200 val)')
-    
+    plt.title(f"Plot for Closing Price V/S Time for {user_input}")
     plt.legend()
     plt.xlabel('Date')
     plt.ylabel('Closing Price ($)')
@@ -324,7 +324,7 @@ with tab2:
     plt.plot(y_test, 'g', label="Original price")
     plt.plot(y_predicted, 'r', label="Predicted price")
 
-    plt.title("Plot between Original and Predicted Stock Price")
+    plt.title(f"Plot between Original and Predicted Stock Price for {user_input}")
     plt.xlabel('No of Days')
     plt.ylabel('Stock Price($)')
     plt.legend()
