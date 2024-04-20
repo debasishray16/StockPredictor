@@ -1,6 +1,5 @@
 # Stock Prediction System
 
-
 Stock predictor analysis involves using various techniques, including statistical analysis, machine learning, and predictive modeling, to forecast future stock prices based on historical data. The primary objective of stock predictor analysis is to provide investors and traders with insights into potential price movements, helping them make more informed decisions about buying, selling, or holding stocks.
 
 1. **Data Collection**: The first step in stock predictor analysis is gathering historical stock data, including prices (e.g., opening, closing, high, low), trading volumes, and other relevant metrics. Data can be sourced from financial databases, APIs provided by stock exchanges, or financial news websites.
@@ -21,16 +20,11 @@ Stock predictor analysis involves using various techniques, including statistica
 
 ## Stock predictor and data analysis
 
-
-
-
-
 ### Model Used
 
 1. Scikit Learnng
 2. Matplotlib
-3. 
-
+3.
 
 - Debasish Side Command for pushing
 
@@ -60,7 +54,6 @@ git commit -m "First commit"
 git push origin main
 ```
 
-
 - Utkarsh Side Command for pulling
 
 ```
@@ -78,7 +71,6 @@ git commit -m "First commit"
 git push origin main
 ```
 
-
 - Amal Side Command for pulling
 
 ```
@@ -89,3 +81,9 @@ git pull origin main
 
 - If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
 - If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
+
+To Access frontend side of project, cd into Utkarsh Test.
+
+To Access backend side of project, cd into Debasish Test and Amal Test.
+
+To Access and run project as a whole, cd into final_project.
