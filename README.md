@@ -1,5 +1,15 @@
 # Stock Prediction System
 
+To run streamlit application:
+
+1. Go to file directory ..Debasish Test\Previous Model
+
+```bash
+streamlit run app.py
+```
+
+## Introduction
+
 Stock predictor analysis involves using various techniques, including statistical analysis, machine learning, and predictive modeling, to forecast future stock prices based on historical data. The primary objective of stock predictor analysis is to provide investors and traders with insights into potential price movements, helping them make more informed decisions about buying, selling, or holding stocks.
 
 1. **Data Collection**: The first step in stock predictor analysis is gathering historical stock data, including prices (e.g., opening, closing, high, low), trading volumes, and other relevant metrics. Data can be sourced from financial databases, APIs provided by stock exchanges, or financial news websites.
@@ -76,8 +86,6 @@ git push origin main
 ```
 git pull origin main
 ```
-
-**Notice: If you are making any changes and name the commit as "(filename): update(no.)"**
 
 - If we make change in style.css file 2nd time. Then, git commit -m "style.css: update2"
 - If we make change in style.css file 3rd time. Then, git commit -m "style.css: update3"
