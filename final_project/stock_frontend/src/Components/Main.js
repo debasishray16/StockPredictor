@@ -43,7 +43,6 @@ const Main = () => {
         <div className='basis-[70%] border bg-[#5848d3] shadow-md cursor-pointer rounded-[4px]'>
           <div className='bg-[#A59DDF] flex items-center justify-between py-[20px] px-[20px] border-b-[1px] border-[#19223d] mb-[20px]'>
             <h2 className='font-bold'>Earnings Overview</h2>
-            <FaEllipsisV color='gray' className='cursor-pointer' />
           </div>
           <img src={closing} alt='Closing Price' />
         </div>
@@ -52,7 +51,6 @@ const Main = () => {
         <div className='basis-[70%] border bg-[#5848d3] shadow-md cursor-pointer rounded-[4px]'>
           <div className='bg-[#A59DDF] flex items-center justify-between py-[20px] px-[20px] border-b-[1px] border-[#19223d] mb-[20px]'>
             <h2 className='font-bold'>Original Vs Prediction</h2>
-            <FaEllipsisV color='gray' className='cursor-pointer' />
           </div>
           <img src={prediction} alt='Prediction Vs Original'/>
         </div>
