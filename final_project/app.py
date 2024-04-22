@@ -10,6 +10,7 @@ from keras.optimizers import SGD
 from keras.models import load_model
 
 import streamlit as st
+import subprocess
 
 from sklearn.preprocessing import MinMaxScaler
 
@@ -18,20 +19,29 @@ from tensorflow.python.framework import ops
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
-from flask import Flask, request
+import json
+import os
+from watchdog_script import main as run_watchdog
+    
+initial_run=0
 
-input_data_company=''
-app = Flask(__name__)
+#Code to import JSON file having Entered company's code
+imp_file = open('stock_frontend/data_backend/variable_data.json')
+company_data=json.load(imp_file)
+company_name=company_data['company_code']
 
-@app.route('/api/process-data', methods=['POST'])
+#Code to check first run or not
+if initial_run!=0:
+    user_input=company_data['company_code']
+    st.rerun()
+else:
+    initial_run=initial_run+1
 
-def process_data(): 
-    data = request.json
-
-    input_data = data.get('inputData')
+input_data_company=company_data['company_code']
 
 if input_data_company is None or input_data_company=='':
     input_data_company = "AAPL"
+
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
@@ -47,8 +57,9 @@ st.set_page_config(
     layout="centered"
 )
 
+run_watchdog()
 
-st.title('Stock Trend Prediction')
+st.title('Stock Market Predictor')
 
 
 # Taking input from user.
@@ -268,7 +279,7 @@ with tab2:
     plt.plot(ma100, 'g', label='Mean (100 val)')
     # this is the mean of 200 values
     plt.plot(ma200, 'r', label='Mean (200 val)')
-    plt.title(f"Plot for Closing Price V/S Time for {user_input}")
+    plt.title(f"Plot for Closing Price V/S Time for {user_input}, {company_name}")
     plt.legend()
     plt.xlabel('Date')
     plt.ylabel('Closing Price ($)')
