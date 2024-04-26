@@ -279,7 +279,7 @@ with tab2:
     plt.plot(ma100, 'g', label='Mean (100 val)')
     # this is the mean of 200 values
     plt.plot(ma200, 'r', label='Mean (200 val)')
-    plt.title(f"Plot for Closing Price V/S Time for {user_input}, {company_name}")
+    plt.title(f"Plot for Closing Price V/S Time for {user_input}")
     plt.legend()
     plt.xlabel('Date')
     plt.ylabel('Closing Price ($)')
