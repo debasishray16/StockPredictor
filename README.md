@@ -61,3 +61,5 @@ node server.js
 ![Backend Integration](/Project%20Overview/images/Backend.png)
 
 ![Backend Integration](/Project%20Overview/images/Frontend+Backend.png)
+
+Note: This project is still in production and will not resemble the final product.
