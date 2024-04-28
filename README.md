@@ -8,6 +8,7 @@ To run streamlit application:
 streamlit run app.py
 ```
 
+
 To Access frontend side of project, cd into Utkarsh Test.
 
 To Access backend side of project, cd into Debasish Test and Amal Test.
