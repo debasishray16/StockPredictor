@@ -41,8 +41,8 @@ cd "stock_frontend"
 npm run start
 ```
 
-- Then ,start the server by navigating to different file.
-(C:\Users\Debasish Ray\Desktop\stock\StockPredictor\final_project\stock_frontend\data_backend)
+- Then ,start the server by navigating in the file.
+(final_project\stock_frontend\data_backend)
 
 ```cmd
 cd data_backend
