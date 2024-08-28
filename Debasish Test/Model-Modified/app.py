@@ -20,14 +20,13 @@ from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2
 import tensorflow.compat.v2 as tf
 
 
-
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
 
 print(keras.__version__)
-start = '2010-01-01'
-end = '2019-12-31'
+start = '2015-01-01'
+end = '2023-01-01'
 
 # Page Layout
 st.set_page_config(
@@ -44,10 +43,8 @@ user_input = st.text_input('Enter Stock Ticker', "AAPL")
 df = web.DataReader(user_input, 'stooq', start, end)
 
 
-
 st.date_input('Start Date')
 st.date_input('End Date')
-
 
 
 tab1, tab2, tab3 = st.tabs(
@@ -57,7 +54,7 @@ tab1, tab2, tab3 = st.tabs(
 with tab1:
     import streamlit.components.v1 as components
     st.subheader("Ticker List")
-    
+
     # Add subtitle
     SUB_TITLE = """
     <!DOCTYPE html>
@@ -195,14 +192,17 @@ with tab2:
     st.write(df)
     st.text(df.size)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
-    
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
     # Describing Data
-    st.subheader('Data Overview from 2010 - Latest')
-    st.text("This section gives the overview of the dataset which shows different columns.")
+    st.subheader('Data Overview from 2015 - 2023')
+    st.text(
+        "This section gives the overview of the dataset which shows different columns.")
     st.write(df.describe())
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Closing Price V/S Time] Chart")
     fig = plt.figure(figsize=(12, 6))
@@ -211,7 +211,7 @@ with tab2:
     ax.set_facecolor('#C7E1F4')
 
     plt.plot(df.Close, '#FF8F00', label='Closing Price')
-    plt.title(user_input+ ' Stock plot')
+    plt.title(user_input + ' Stock plot')
     plt.legend()
     plt.xlabel('Year')
     plt.ylabel('Closing Price (USD)')
@@ -221,11 +221,14 @@ with tab2:
     plt.tight_layout()
     st.pyplot(fig)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
-    
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
     st.subheader("[Closing Price V/S Time] Chart with 100MA")
 
     ma100 = df.Close.rolling(100).mean()
+    ma50 = df.Close.rolling(50).mean()
+    ma75 = df.Close.rolling(75).mean()
     fig = plt.figure(figsize=(12, 6))
     ax = plt.axes()
     ax.set_facecolor('#C7E1F4')
@@ -233,10 +236,12 @@ with tab2:
     plt.grid(True, linestyle='--', color='#BDBDBD')
     plt.tight_layout()
 
-    plt.title('Multiple Lines '+ user_input+ ' Stock plot')
-    plt.plot(df.Close, '#FF8F00', label='Closing Price')
+    plt.title('Multiple Lines ' + user_input + ' Stock plot')
+    plt.plot(df.Close, '#2a04e8', label='Closing Price')
     # this is the mean of 100 values
-    plt.plot(ma100, 'g--', label='Mean (100 val)')
+    plt.plot(ma100, '#43f104', label='Mean (100 val)')
+    plt.plot(ma50, 'y', label='Mean (50 val)')
+    plt.plot(ma75, '#f104c8', label='Mean (75 val)')
 
     plt.legend()
     plt.xlabel('Year')
@@ -244,8 +249,9 @@ with tab2:
 
     st.pyplot(fig)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
-    
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
     st.subheader("[Closing Price V/S Time] Chart with 100MA and 200MA")
     ma100 = df.Close.rolling(100).mean()
     ma200 = df.Close.rolling(200).mean()
@@ -279,7 +285,7 @@ with tab2:
 
     # Load Model
 
-    model = tf.keras.models.load_model('keras_model.h5', compile=False)
+    model = tf.keras.models.load_model('8_15_23_125_LXg.h5', compile=False)
 
     # Testing part
     past_100_days = data_training.tail(100)
@@ -302,11 +308,10 @@ with tab2:
     scale_factor = 1/scaler[0]
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
-    
 
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
-    
     # Final Graph
     st.subheader('Prediction V/S Original')
     fig2 = plt.figure(figsize=(12, 6))
@@ -330,3 +335,146 @@ with tab2:
 
 with tab3:
     st.subheader("Open-Feature")
+    st.subheader("Dataset Overview of " + user_input + " Ticker")
+    st.write(df)
+    st.text(df.size)
+
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
+    # Describing Data
+    st.subheader('Data Overview from 2015 - 2023')
+    st.text(
+        "This section gives the overview of the dataset which shows different columns.")
+    st.write(df.describe())
+
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
+    st.subheader("[Opening Price V/S Time] Chart")
+    fig_open = plt.figure(figsize=(12, 6))
+
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.plot(df.Open, '#FF8F00', label='Opening Price')
+    plt.title(user_input + ' Stock plot')
+    plt.legend()
+    plt.xlabel('Year')
+    plt.ylabel('Opening Price (USD)')
+    plt.xticks(rotation=45)
+
+    plt.grid(True, linestyle='--', color='#BDBDBD')
+    plt.tight_layout()
+    st.pyplot(fig)
+
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
+    st.subheader("[Closing Price V/S Time] Chart with 100MA")
+
+    ma100 = df.Open.rolling(100).mean()
+    ma50 = df.Open.rolling(50).mean()
+    ma75 = df.Open.rolling(75).mean()
+    fig_open = plt.figure(figsize=(12, 6))
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.grid(True, linestyle='--', color='#BDBDBD')
+    plt.tight_layout()
+
+    plt.title('Multiple Lines ' + user_input + ' Stock plot')
+    plt.plot(df.Open, '#2a04e8', label='Opening Price')
+    # this is the mean of 100 values
+    plt.plot(ma100, '#43f104', label='Mean (100 val)')
+    plt.plot(ma50, 'y', label='Mean (50 val)')
+    plt.plot(ma75, '#f104c8', label='Mean (75 val)')
+
+    plt.legend()
+    plt.xlabel('Year')
+    plt.ylabel('Opening Price (USD)')
+
+    st.pyplot(fig_open)
+
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
+    st.subheader("[Opening Price V/S Time] Chart with 100MA and 200MA")
+    ma100 = df.Open.rolling(100).mean()
+    ma200 = df.Open.rolling(200).mean()
+    fig_open = plt.figure(figsize=(12, 6))
+    fig_open.patch.set_facecolor('#A59DDF')
+
+    ax = plt.axes()
+    ax.set_facecolor('#211970')
+
+    plt.grid(True, linestyle='--', color='#626784')
+    plt.xticks(rotation=45)
+
+    plt.plot(df.Open, '#A720C4', label='Opening Price')
+    # this is the mean of 100 values
+    plt.plot(ma100, 'g', label='Mean (100 val)')
+    # this is the mean of 200 values
+    plt.plot(ma200, 'r', label='Mean (200 val)')
+
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Opening Price ($)')
+
+    st.pyplot(fig_open)
+
+    # splitting the data into training and testing
+    data_training = pd.DataFrame(df['Close'][0:int(len(df)*0.70)])
+    data_testing = pd.DataFrame(df['Close'][int(len(df)*0.70):int(len(df))])
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    data_training_array = scaler.fit_transform(data_training)
+
+    # Load Model
+
+    model1 = tf.keras.models.load_model('8_15_23_125_open_LXg.h5', compile=False)
+
+    # Testing part
+    past_100_days = data_training.tail(100)
+    final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
+
+    input_data = scaler.fit_transform(final_df)
+
+    x_test = []
+    y_test = []
+
+    for i in range(100, input_data.shape[0]):
+        x_test.append(input_data[i-100: i])
+        y_test.append(input_data[i, 0])
+
+    x_test, y_test = np.array(x_test), np.array(y_test)
+    y_predicted = model1.predict(x_test)
+
+    scaler = scaler.scale_
+
+    scale_factor = 1/scaler[0]
+    y_predicted = y_predicted * scale_factor
+    y_test = y_test * scale_factor
+
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
+
+    # Final Graph
+    st.subheader('Prediction V/S Original')
+    fig_open2 = plt.figure(figsize=(12, 6))
+    fig_open2.patch.set_facecolor('#A59DDE')
+
+    ax = plt.axes()
+    ax.set_facecolor('#C7E1F4')
+
+    plt.grid(True, linestyle='--', color='#626784')
+    plt.plot(y_test, 'g', label="Original price")
+    plt.plot(y_predicted, 'r', label="Predicted price")
+
+    plt.title("Plot between Original and Predicted Stock Price")
+    plt.xlabel('No of Days')
+    plt.ylabel('Stock Price($)')
+    plt.legend()
+    plt.show()
+
+    st.pyplot(fig_open2)
