@@ -37,14 +37,9 @@ st.set_page_config(
 
 st.title('Stock Trend Prediction')
 
-
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker', "AAPL")
+user_input = st.text_input('Enter Stock Ticker',"JPM")
 df = web.DataReader(user_input, 'stooq', start, end)
-
-
-st.date_input('Start Date')
-st.date_input('End Date')
 
 
 tab1, tab2, tab3 = st.tabs(
@@ -188,6 +183,7 @@ with tab1:
 
 with tab2:
     st.subheader("Close-Feature")
+    st.write("Close feature in a stock prediction system refers to the closing price of a stock for a given trading day. It is the final price at which the stock is traded when the market closes. The closing price is often considered the most important price of the day because it reflects the stock’s value at the end of the trading session and is frequently used as a benchmark for stock performance analysis.")
     st.subheader("Dataset Overview of " + user_input + " Ticker")
     st.write(df)
     st.text(df.size)
@@ -255,6 +251,8 @@ with tab2:
     st.subheader("[Closing Price V/S Time] Chart with 100MA and 200MA")
     ma100 = df.Close.rolling(100).mean()
     ma200 = df.Close.rolling(200).mean()
+    ma50 = df.Open.rolling(50).mean()
+    ma75 = df.Open.rolling(75).mean()
     fig = plt.figure(figsize=(12, 6))
     fig.patch.set_facecolor('#A59DDF')
 
@@ -269,6 +267,9 @@ with tab2:
     plt.plot(ma100, 'g', label='Mean (100 val)')
     # this is the mean of 200 values
     plt.plot(ma200, 'r', label='Mean (200 val)')
+    plt.plot(ma50, 'y', label='Mean (50 val)')
+    plt.plot(ma75, '#f104c8', label='Mean (75 val)')
+    
 
     plt.legend()
     plt.xlabel('Date')
@@ -335,21 +336,19 @@ with tab2:
 
 with tab3:
     st.subheader("Open-Feature")
+    st.write("Open feature in a stock prediction system refers to the opening price of a stock for a given trading day. The opening price is typically the price at which the stock first trades when the market opens. It is an essential feature in stock prediction datasets, as it often reflects the initial market sentiment and can serve as a predictor of the stock's performance for the rest of the day.")
     st.subheader("Dataset Overview of " + user_input + " Ticker")
     st.write(df)
     st.text(df.size)
 
-    st.markdown('<hr style="border:2px solid #00457C;">',
-                unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
 
     # Describing Data
     st.subheader('Data Overview from 2015 - 2023')
-    st.text(
-        "This section gives the overview of the dataset which shows different columns.")
+    st.text("This section gives the overview of the dataset which shows different columns.")
     st.write(df.describe())
 
-    st.markdown('<hr style="border:2px solid #00457C;">',
-                unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart")
     fig_open = plt.figure(figsize=(12, 6))
@@ -368,8 +367,7 @@ with tab3:
     plt.tight_layout()
     st.pyplot(fig)
 
-    st.markdown('<hr style="border:2px solid #00457C;">',
-                unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
 
     st.subheader("[Closing Price V/S Time] Chart with 100MA")
 
@@ -396,10 +394,11 @@ with tab3:
 
     st.pyplot(fig_open)
 
-    st.markdown('<hr style="border:2px solid #00457C;">',
-                unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart with 100MA and 200MA")
+    ma50 = df.Open.rolling(50).mean()
+    ma75 = df.Open.rolling(75).mean()
     ma100 = df.Open.rolling(100).mean()
     ma200 = df.Open.rolling(200).mean()
     fig_open = plt.figure(figsize=(12, 6))
@@ -412,9 +411,9 @@ with tab3:
     plt.xticks(rotation=45)
 
     plt.plot(df.Open, '#A720C4', label='Opening Price')
-    # this is the mean of 100 values
+    plt.plot(ma50, 'y', label='Mean (50 val)')
+    plt.plot(ma75, 'c', label='Mean (75 val)')
     plt.plot(ma100, 'g', label='Mean (100 val)')
-    # this is the mean of 200 values
     plt.plot(ma200, 'r', label='Mean (200 val)')
 
     plt.legend()
@@ -432,7 +431,8 @@ with tab3:
 
     # Load Model
 
-    model1 = tf.keras.models.load_model('8_15_23_125_open_LXg.h5', compile=False)
+    model1 = tf.keras.models.load_model(
+        '8_15_23_125_open_LXg.h5', compile=False)
 
     # Testing part
     past_100_days = data_training.tail(100)
@@ -456,8 +456,7 @@ with tab3:
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
 
-    st.markdown('<hr style="border:2px solid #00457C;">',
-                unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
 
     # Final Graph
     st.subheader('Prediction V/S Original')
