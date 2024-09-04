@@ -19,7 +19,6 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
-
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
@@ -34,13 +33,11 @@ st.set_page_config(
     layout="centered"
 )
 
-
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
 user_input = st.text_input('Enter Stock Ticker',"JPM")
 df = web.DataReader(user_input, 'stooq', start, end)
-
 
 tab1, tab2, tab3 = st.tabs(
     ["Ticker Info.", "Close-Feature", "Open-Feature"]
