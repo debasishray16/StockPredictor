@@ -1,1 +1,5 @@
 .vscode
+node_modules\.package-lock.json
+
+!final_project\node_modules
+!Utkarsh Test\stock_frontend\node_modules
