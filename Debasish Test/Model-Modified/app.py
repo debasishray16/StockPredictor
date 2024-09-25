@@ -179,6 +179,18 @@ with tab1:
     components.html(SUB_TITLE, height=1000)
 
 with tab2:
+    
+    # Model Parameters
+    st.sidebar.markdown("# OpenAPI Integration")
+    st.sidebar.markdown("# Model Parameters")
+    temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7, 0.1)
+    max_tokens = st.sidebar.number_input("Max Tokens", 50, 500, 256, step=50)
+    top_p = st.sidebar.slider("Top P", 0.1, 1.0, 0.9, 0.1)
+    n = st.sidebar.number_input("N", 1, 5, 2, step=1)
+    stop = st.sidebar.text_input("Stop", "")
+    frequency_penalty = st.sidebar.slider("Frequency Penalty", 0.0, 1.0, 0.9, 0.1)
+    presence_penalty = st.sidebar.slider("Presence Penalty", 0.0, 1.0, 0.9, 0.1)
+
     st.subheader("Close-Feature")
     st.write("Close feature in a stock prediction system refers to the closing price of a stock for a given trading day. It is the final price at which the stock is traded when the market closes. The closing price is often considered the most important price of the day because it reflects the stock’s value at the end of the trading session and is frequently used as a benchmark for stock performance analysis.")
     st.subheader("Dataset Overview of " + user_input + " Ticker")
