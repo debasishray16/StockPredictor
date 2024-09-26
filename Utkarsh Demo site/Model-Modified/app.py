@@ -19,6 +19,9 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
+import streamlit as st
+import yfinance as yf
+
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
@@ -38,6 +41,31 @@ st.title('Stock Trend Prediction')
 # Taking input from user.
 user_input = st.text_input('Enter Stock Ticker',"JPM")
 df = web.DataReader(user_input, 'stooq', start, end)
+
+def get_company_description(ticker_symbol):
+    try:
+        # Fetch company info from yfinance
+        ticker_data = yf.Ticker(ticker_symbol)
+        company_info = ticker_data.info
+        
+        # Extract the company description
+        company_description = company_info.get('longBusinessSummary', 'Description not available for this company.')
+        
+        return company_description
+
+    except Exception as e:
+        return f"Error retrieving company description: {str(e)}"
+
+if user_input:
+    # Fetch company description
+    company_description = get_company_description(user_input)
+    st.subheader(f"Company Description for {user_input}")
+    # Apply justified text using custom HTML and CSS
+    st.markdown(f"""
+        <div style='text-align: justify; font-size: 16px;'>
+            {company_description}
+        </div>
+    """, unsafe_allow_html=True)
 
 tab1, tab2, tab3 = st.tabs(
     ["Ticker Info.", "Close-Feature", "Open-Feature"]
