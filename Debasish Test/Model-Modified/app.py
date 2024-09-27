@@ -70,6 +70,8 @@ if user_input:
             {company_description}
         </div>
     """, unsafe_allow_html=True)
+    
+
 
 tab1, tab2, tab3 = st.tabs(
     ["Ticker Info.", "Close-Feature", "Open-Feature"]
