@@ -19,6 +19,9 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
 
+import streamlit as st
+import yfinance as yf
+
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
@@ -36,8 +39,37 @@ st.set_page_config(
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker',"JPM")
+user_input = st.text_input('Enter Stock Ticker', "JPM")
 df = web.DataReader(user_input, 'stooq', start, end)
+
+
+def get_company_description(ticker_symbol):
+    try:
+        # Fetch company info from yfinance
+        ticker_data = yf.Ticker(ticker_symbol)
+        company_info = ticker_data.info
+
+        # Extract the company description
+        company_description = company_info.get(
+            'longBusinessSummary', 'Description not available for this company.')
+
+        return company_description
+
+    except Exception as e:
+        return f"Error retrieving company description: {str(e)}"
+
+
+if user_input:
+
+    # Fetch company description
+    company_description = get_company_description(user_input)
+    st.subheader(f"Company Description for {user_input}")
+    # Apply justified text using custom HTML and CSS
+    st.markdown(f"""
+        <div style='text-align: justify; font-size: 16px;'>
+            {company_description}
+        </div>
+    """, unsafe_allow_html=True)
 
 tab1, tab2, tab3 = st.tabs(
     ["Ticker Info.", "Close-Feature", "Open-Feature"]
@@ -179,18 +211,6 @@ with tab1:
     components.html(SUB_TITLE, height=1000)
 
 with tab2:
-    
-    # Model Parameters
-    st.sidebar.markdown("# OpenAPI Integration")
-    st.sidebar.markdown("# Model Parameters")
-    temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7, 0.1)
-    max_tokens = st.sidebar.number_input("Max Tokens", 50, 500, 256, step=50)
-    top_p = st.sidebar.slider("Top P", 0.1, 1.0, 0.9, 0.1)
-    n = st.sidebar.number_input("N", 1, 5, 2, step=1)
-    stop = st.sidebar.text_input("Stop", "")
-    frequency_penalty = st.sidebar.slider("Frequency Penalty", 0.0, 1.0, 0.9, 0.1)
-    presence_penalty = st.sidebar.slider("Presence Penalty", 0.0, 1.0, 0.9, 0.1)
-
     st.subheader("Close-Feature")
     st.write("Close feature in a stock prediction system refers to the closing price of a stock for a given trading day. It is the final price at which the stock is traded when the market closes. The closing price is often considered the most important price of the day because it reflects the stock’s value at the end of the trading session and is frequently used as a benchmark for stock performance analysis.")
     st.subheader("Dataset Overview of " + user_input + " Ticker")
@@ -278,7 +298,6 @@ with tab2:
     plt.plot(ma200, 'r', label='Mean (200 val)')
     plt.plot(ma50, 'y', label='Mean (50 val)')
     plt.plot(ma75, '#f104c8', label='Mean (75 val)')
-    
 
     plt.legend()
     plt.xlabel('Date')
@@ -350,14 +369,17 @@ with tab3:
     st.write(df)
     st.text(df.size)
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     # Describing Data
     st.subheader('Data Overview from 2015 - 2023')
-    st.text("This section gives the overview of the dataset which shows different columns.")
+    st.text(
+        "This section gives the overview of the dataset which shows different columns.")
     st.write(df.describe())
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart")
     fig_open = plt.figure(figsize=(12, 6))
@@ -376,7 +398,8 @@ with tab3:
     plt.tight_layout()
     st.pyplot(fig)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Closing Price V/S Time] Chart with 100MA")
 
@@ -403,7 +426,8 @@ with tab3:
 
     st.pyplot(fig_open)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart with 100MA and 200MA")
     ma50 = df.Open.rolling(50).mean()
@@ -465,7 +489,8 @@ with tab3:
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     # Final Graph
     st.subheader('Prediction V/S Original')

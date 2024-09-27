@@ -57,6 +57,7 @@ def get_company_description(ticker_symbol):
         return f"Error retrieving company description: {str(e)}"
 
 if user_input:
+
     # Fetch company description
     company_description = get_company_description(user_input)
     st.subheader(f"Company Description for {user_input}")
