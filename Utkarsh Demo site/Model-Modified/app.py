@@ -39,22 +39,25 @@ st.set_page_config(
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker',"JPM")
+user_input = st.text_input('Enter Stock Ticker', "JPM")
 df = web.DataReader(user_input, 'stooq', start, end)
+
 
 def get_company_description(ticker_symbol):
     try:
         # Fetch company info from yfinance
         ticker_data = yf.Ticker(ticker_symbol)
         company_info = ticker_data.info
-        
+
         # Extract the company description
-        company_description = company_info.get('longBusinessSummary', 'Description not available for this company.')
-        
+        company_description = company_info.get(
+            'longBusinessSummary', 'Description not available for this company.')
+
         return company_description
 
     except Exception as e:
         return f"Error retrieving company description: {str(e)}"
+
 
 if user_input:
 
@@ -67,6 +70,49 @@ if user_input:
             {company_description}
         </div>
     """, unsafe_allow_html=True)
+
+
+with st.sidebar:
+    st.title("Financial Analysis")
+    ticker = st.text_input("Enter a stock ticker (e.g. AAPL)", "AAPL")
+    period = st.selectbox("Enter a time frame",
+                          ("1D", "5D", "1M", "6M", "YTD", "1Y", "5Y"), index=2)
+    button = st.button("Submit")
+
+if button:
+    if not ticker.strip():
+        st.error("Please provide a valid stock ticker.")
+    else:
+        try:
+            with st.spinner('Please wait...'):
+                # Retrieve stock data
+                stock = yf.Ticker(ticker)
+                info = stock.info
+
+                st.subheader(f"{ticker} - {info.get('longName', 'N/A')}")
+
+                # Plot historical stock price data
+                if period == "1D":
+                    history = stock.history(period="1d", interval="1h")
+                elif period == "5D":
+                    history = stock.history(period="5d", interval="1d")
+                elif period == "1M":
+                    history = stock.history(period="1mo", interval="1d")
+                elif period == "6M":
+                    history = stock.history(period="6mo", interval="1wk")
+                elif period == "YTD":
+                    history = stock.history(period="ytd", interval="1mo")
+                elif period == "1Y":
+                    history = stock.history(period="1y", interval="1mo")
+                elif period == "5Y":
+                    history = stock.history(period="5y", interval="3mo")
+
+                chart_data = pd.DataFrame(history["Close"])
+                st.line_chart(chart_data)
+
+        except Exception as e:
+            st.exception(f"An error occurred: {e}")
+
 
 tab1, tab2, tab3 = st.tabs(
     ["Ticker Info.", "Close-Feature", "Open-Feature"]
@@ -295,7 +341,6 @@ with tab2:
     plt.plot(ma200, 'r', label='Mean (200 val)')
     plt.plot(ma50, 'y', label='Mean (50 val)')
     plt.plot(ma75, '#f104c8', label='Mean (75 val)')
-    
 
     plt.legend()
     plt.xlabel('Date')
@@ -367,14 +412,17 @@ with tab3:
     st.write(df)
     st.text(df.size)
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     # Describing Data
     st.subheader('Data Overview from 2015 - 2023')
-    st.text("This section gives the overview of the dataset which shows different columns.")
+    st.text(
+        "This section gives the overview of the dataset which shows different columns.")
     st.write(df.describe())
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart")
     fig_open = plt.figure(figsize=(12, 6))
@@ -393,7 +441,8 @@ with tab3:
     plt.tight_layout()
     st.pyplot(fig)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Closing Price V/S Time] Chart with 100MA")
 
@@ -420,7 +469,8 @@ with tab3:
 
     st.pyplot(fig_open)
 
-    st.markdown('<hr style="border:2px solid #00457C;">', unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     st.subheader("[Opening Price V/S Time] Chart with 100MA and 200MA")
     ma50 = df.Open.rolling(50).mean()
@@ -482,7 +532,8 @@ with tab3:
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
 
-    st.markdown('<hr style="border:2px solid #00457C;">',unsafe_allow_html=True)
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
     # Final Graph
     st.subheader('Prediction V/S Original')

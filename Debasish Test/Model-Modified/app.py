@@ -21,6 +21,7 @@ import tensorflow.compat.v2 as tf
 
 import streamlit as st
 import yfinance as yf
+from requests.exceptions import HTTPError
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
@@ -54,6 +55,9 @@ def get_company_description(ticker_symbol):
             'longBusinessSummary', 'Description not available for this company.')
 
         return company_description
+
+    except HTTPError as e:
+        print(f"Error retrieving company description: {e}")
 
     except Exception as e:
         return f"Error retrieving company description: {str(e)}"
