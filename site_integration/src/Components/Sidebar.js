@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import {FaTachometerAlt } from "react-icons/fa"
+import React, { useState } from 'react';
+import { FaTachometerAlt } from "react-icons/fa";
 
 const Sidebar = () => {
-
   const [width, setWidth] = useState(270);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -52,12 +51,14 @@ const Sidebar = () => {
           <p className='text-[14px] leading-[20px] font-semibold hover:text-[#4E73DF] text-[#c7cad8]'>Dashboard</p>
         </div>
       </div>
-      <div
-        className="w-1 bg-[#07051b] cursor-ew-resize"
-        onMouseDown={handleMouseDown}
-      />
+      {/* Three-dot draggable indicator */}
+      <div className="flex flex-col items-center justify-center w-3 bg-[#07051b] cursor-ew-resize" onMouseDown={handleMouseDown}>
+        <span className="w-1 h-1 bg-gray-500 rounded-full mb-1"></span>
+        <span className="w-1 h-1 bg-gray-500 rounded-full mb-1"></span>
+        <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
