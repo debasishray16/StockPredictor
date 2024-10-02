@@ -387,7 +387,7 @@ with tab2:
     # Final Graph
     st.subheader('Prediction V/S Original')
     fig2 = plt.figure(figsize=(12, 6))
-    fig2.patch.set_facecolor('#A59DDE')
+    fig2.patch.set_facecolor('#624ef0')
 
     ax = plt.axes()
     ax.set_facecolor('#C7E1F4')

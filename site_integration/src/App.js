@@ -6,10 +6,10 @@ import {Outlet} from 'react-router-dom';
 function App() {
   return (
     <div className="flex">
-      <div className='basis-[12%] h-[100vh] border'>
+      <div className='basis-[12%] h-[100vh]'>
       <Sidebar />
       </div>
-      <div className='basis-[88%] border h-[100vh] overflow-scroll'>
+      <div className='basis-[88%] h-[100vh] overflow-scroll'>
         <Dashboardview />
         <div>
         <Outlet></Outlet>
