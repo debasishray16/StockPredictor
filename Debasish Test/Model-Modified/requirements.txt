@@ -7,3 +7,4 @@ keras
 tensorflow
 scikit-learn
 yfinance==0.2.31
+streamlit-lottie
