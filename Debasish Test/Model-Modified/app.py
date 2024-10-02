@@ -23,6 +23,8 @@ import streamlit as st
 import yfinance as yf
 from requests.exceptions import HTTPError
 
+from streamlit_lottie import st_lottie
+
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 
 ops.reset_default_graph()
@@ -40,8 +42,19 @@ st.set_page_config(
 st.title('Stock Trend Prediction')
 
 # Taking input from user.
-user_input = st.text_input('Enter Stock Ticker', "JPM")
-df = web.DataReader(user_input, 'stooq', start, end)
+ticker_list = ["JPM", "GOOG", "AAPL", "MMM"]
+user_input = st.selectbox(
+    "Enter Stock Ticker",
+    ticker_list,
+    index=None,
+    placeholder="Ticker",
+)
+
+if user_input == None:
+    print("No ticker Entered")
+else:
+    df = web.DataReader(user_input, 'stooq', start, end)
+
 
 
 def get_company_description(ticker_symbol):
@@ -68,6 +81,7 @@ if user_input:
     # Fetch company description
     company_description = get_company_description(user_input)
     st.subheader(f"Company Description for {user_input}")
+    
     # Apply justified text using custom HTML and CSS
     st.markdown(f"""
         <div style='text-align: justify; font-size: 16px;'>
@@ -75,16 +89,19 @@ if user_input:
         </div>
     """, unsafe_allow_html=True)
     
+    st.markdown('<hr style="border:2px solid #00457C;">',
+                unsafe_allow_html=True)
 
-
-tab1, tab2, tab3 = st.tabs(
-    ["Ticker Info.", "Close-Feature", "Open-Feature"]
+tab1, tab2, tab3 ,tab4 = st.tabs(
+    ["Ticker Info.", "Close-Feature", "Open-Feature", "Charts"]
 )
 
 with tab1:
     import streamlit.components.v1 as components
-    st.subheader("Ticker List")
-
+    
+    with st.echo():
+        st_lottie("https://lottie.host/7aeb01e2-f5e7-4cdc-9849-f992f90aae13/Igkjy3ONSC.json")
+    
     # Add subtitle
     SUB_TITLE = """
     <!DOCTYPE html>
@@ -219,7 +236,7 @@ with tab1:
 with tab2:
     st.subheader("Close-Feature")
     st.write("Close feature in a stock prediction system refers to the closing price of a stock for a given trading day. It is the final price at which the stock is traded when the market closes. The closing price is often considered the most important price of the day because it reflects the stock’s value at the end of the trading session and is frequently used as a benchmark for stock performance analysis.")
-    st.subheader("Dataset Overview of " + user_input + " Ticker")
+    st.subheader("Dataset Overview")
     st.write(df)
     st.text(df.size)
 
@@ -366,7 +383,6 @@ with tab2:
     plt.show()
 
     st.pyplot(fig2)
-
 
 with tab3:
     st.subheader("Open-Feature")
@@ -517,3 +533,12 @@ with tab3:
     plt.show()
 
     st.pyplot(fig_open2)
+
+with tab4:
+    st.subheader(f"Charts: {user_input}")
+
+    st.line_chart(df.Close)
+    st.line_chart(df.Open)
+    st.line_chart(df.Volume)
+    st.line_chart(df.High)
+    st.line_chart(df.Low, color="#fd0")

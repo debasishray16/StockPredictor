@@ -8,7 +8,6 @@ To run streamlit application:
 streamlit run app.py
 ```
 
-
 To Access frontend side of project, cd into Utkarsh Test.
 
 To Access backend side of project, cd into Debasish Test and Amal Test.
@@ -54,7 +53,6 @@ cd data_backend
 node server.js
 ```
 
-
 ## Results
 
 ![Frontend Integration](/Project%20Overview/images/Frontend.png)
@@ -65,22 +63,15 @@ node server.js
 
 Note: This project is still in production and will not resemble the final product.
 
-
-
 ## Note (Information)
 
 For this project, we have included a different repository with different models trained on different epoch cycles and parameters, which are usable and integratable in this project.
 <a href="https://github.com/debasishray16/Stock-Prediction-Models"> Link to Model's Repository</a>
 
-
-
 ```shell
 docker run debasishray/streamlit-app:v1.0
 docker stop debasishray/streamlit-app:v1.0
 ```
-
-
-
 
 ## Github Packages
 
