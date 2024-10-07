@@ -53,15 +53,7 @@ cd data_backend
 node server.js
 ```
 
-## Results
-
-![Frontend Integration](/Project%20Overview/images/Frontend.png)
-
-![Backend Integration](/Project%20Overview/images/Backend.png)
-
-![Backend Integration](/Project%20Overview/images/Frontend+Backend.png)
-
-Note: This project is still in production and will not resemble the final product.
+**Note: This project is still in production and will not resemble the final product.**
 
 ## Note (Information)
 

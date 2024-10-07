@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FaTachometerAlt } from "react-icons/fa";
 
 const Sidebar = () => {
   const [width, setWidth] = useState(270);
@@ -7,6 +6,12 @@ const Sidebar = () => {
 
   const minWidth = 220;
   const maxWidth = 400;
+
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleChange = (event) => {
+      setSelectedOption(event.target.value);
+  };
 
   // Function to handle the mouse down event on the resizer
   const handleMouseDown = (e) => {
@@ -44,11 +49,28 @@ const Sidebar = () => {
     <div className="flex h-screen">
       <div className='bg-[#0b082a] px-5 ' style={{ width: `${width}px`, transition: isResizing ? 'none' : 'width 0.2s' }}>
         <div className='px-[5px] py-[30px] flex items-center justify-center border-b border-[#EDEDED] border-opacity-30'>
-          <h1 className='text-[#c7cad8] text-[20px] leading-[24px] font-extrabold cursor-pointer'>Stock Market Predictor</h1>
+          <h1 className='text-[#c7cad8] text-[25px] leading-[24px] font-extrabold cursor-pointer'>Stock Ticker Predictor</h1>
         </div>
-        <div className='flex items-center gap-[15px] py-[20px]  cursor-pointer border-b border-[#EDEDED] border-opacity-30'>
-          <FaTachometerAlt color='#c7cad8' />
-          <p className='text-[14px] leading-[20px] font-semibold hover:text-[#4E73DF] text-[#c7cad8]'>Dashboard</p>
+        <div className='flex-col items-center gap-[15px] py-4  cursor-pointer border-b border-[#EDEDED] border-opacity-30'>
+            <label htmlFor="dropdown" className='text-[14px] leading-[20px] py-[20px] font-semibold hover:text-[#4E73DF] text-[#c7cad8]'>Select an option:</label>
+            <select
+                id="dropdown"
+                value={selectedOption}
+                onChange={handleChange}
+                className="bg-gray-200 border rounded p-1.5 mt-4"
+            >
+                <option value="">--Choose an option--</option>
+                <option value="option1">JPM</option>
+                <option value="option2">AAPL</option>
+                <option value="option3">GOOG</option>
+                <option value="option4">AMZN</option>
+                <option value="option5">ARCC</option>
+                <option value="option6">MMM</option>
+                <option value="option7">MGK</option>
+                <option value="option8">IEP</option>
+                <option value="option9">AAP</option>
+            </select>
+            {selectedOption && <p>You selected: {selectedOption}</p>}
         </div>
       </div>
       {/* Three-dot draggable indicator */}
