@@ -1,31 +1,29 @@
-import pandas_datareader.data as web
+import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import pandas_datareader as data
-import plotly.express as px
 import plotly.graph_objs as go
-import requests
-
 import yfinance as yf
 from requests.exceptions import HTTPError
 import streamlit as st
+import streamlit_lottie
+from streamlit_lottie import st_lottie
 
+import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
-
 import keras
 from keras.initializers import Orthogonal
 from keras.optimizers import SGD
-from keras.models import load_model
-import tensorflow as tf
 from tensorflow.python.framework import ops
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Flatten, GlobalAveragePooling2D, Activation
 import tensorflow.compat.v2 as tf
+
 
 keras.initializers.Orthogonal(gain=1.0, seed=None)
 ops.reset_default_graph()
 
+
+# Parameters
 start = '2015-01-01'
 end = '2023-01-01'
 
@@ -37,21 +35,41 @@ st.set_page_config(
 )
 
 st.title('Stock-Ticker Predictor')
+st.image("images/financial-horizontal-banner-business-economy-260nw-624214175.webp",
+        use_column_width="always")
+
+with st.sidebar:
+    st.title("Stock Prediction System using Stacked-LSTM with XGBoost")
+    st.subheader("Ticker-Predictor")
+    st.markdown(
+        """The objective is to forecast future prices based on historical data. 
+        The complexity of stock market data, characterized by time dependencies and nonlinear relationships, necessitates the use of advanced machine learning techniques. 
+        One effective approach involves combining Long Short-Term Memory (LSTM) networks with XGBoost, leveraging their strengths for improved predictive performance."""
+    )
+
+    st.success("Deployed", icon="💚")
+    st.header("Contributors")
+    st.success("Debasish Ray [Github](https://github.com/debasishray16)")
+    st.success("Utkarsh Raj Sinha [Github](https://github.com/gamecoder08)")
 
 
 # Taking input from user.
-ticker_list = ["JPM", "GOOG", "AAPL", "MMM", "MPZ"]
+ticker_list = ["JPM", "GOOG", "AAPL", "MMM", "MPZ", "AMZN","ARCC","MGK","IEP","AAP","ACEL","ACM","ADSK","ATO","SMCI","SRRK","AJX","CBT","CME","ASX","XOM","NVDA","WFC","BA","AAL","MA","AA","AG","APA","AR","PAA","EA"]
 user_input = st.selectbox(
     "Enter Company Ticker",
     ticker_list,
     index=None,
-    placeholder="Ticker",
+    placeholder="Select Company Ticker",
+    label_visibility="collapsed"
 )
 
 if user_input == None:
-    st.write("No ticker Entered")
+    st.subheader("No ticker Selected")
+    col1,col2=st.columns([0.2,0.5])
+    with col2:
+        st_lottie("https://lottie.host/7aeb01e2-f5e7-4cdc-9849-f992f90aae13/Igkjy3ONSC.json",key="user", width=450)
 else:
-    df = web.DataReader(user_input, 'stooq', start, end)
+    df = yf.download(user_input, start, end)
 
 
 def get_company_description(ticker_symbol):
@@ -84,9 +102,15 @@ if user_input:
         x=df.index, open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'])])
     candlestick_chart.update_layout(
         title=f"{user_input} Candlestick Chart", xaxis_rangeslider_visible=False)
-    st.plotly_chart(candlestick_chart, use_container_width=True,
-                    xlabel="Year", ylabel="$")
+    st.plotly_chart(candlestick_chart, 
+                    use_container_width=True,
+                    xlabel="Year", 
+                    ylabel="$"
+    )
 
+    with st.expander("See Company's Description"):
+        st.write(f'''{company_description}\n Dataset From: {start} To: {end} (8 Years)''')
+    
     # Metrics
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -98,19 +122,14 @@ if user_input:
     with col4:
         st.metric("52-Week Low", f"${max(df.Low):.2f}")
 
-    st.write(f"Ticker's Desc. {user_input}")
-    with st.expander("See Description"):
-        st.write(f'''{company_description}\n Dataset From: {
-                 start} To: {end} (8 Years)''')
-
-    st.subheader("Dataset Overview")
+    
+    st.subheader("Company Dataset")
     st.dataframe(df)
 
     @st.cache_data
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     def convert_df(df):
         return df.to_csv().encode("utf-8")
-
     csv = convert_df(df)
 
     st.download_button(
@@ -139,15 +158,21 @@ if user_input:
             close_fig = plt.figure(figsize=(10, 6))
             ax = plt.axes()
             ax.set_facecolor('#C7E1F4')
+            
             plt.plot(df.Close, '#2B24DA', label='Closing Price')
+            
             plt.title(f'{user_input} Ticker plot')
             plt.legend()
             plt.xlabel('Year')
             plt.ylabel('Close Price($)')
             plt.grid(True, linestyle='--', color='#BDBDBD')
             plt.tight_layout()
+            
             st.plotly_chart(
-                close_fig, use_container_width=False, theme="streamlit")
+                close_fig, 
+                use_container_width=False, 
+                theme="streamlit"
+            )
 
         with container1.expander("Graph: Close Price v/s Time (with mean)"):
             ma100 = df.Close.rolling(100).mean()
@@ -157,15 +182,19 @@ if user_input:
 
             plt.plot(ma100, '#43f104', label='Mean (100 val)')
             plt.plot(df.Close, '#2B24DA', label='Closing Price')
+            
             plt.title(f'{user_input} Ticker plot')
             plt.legend()
             plt.xlabel('Year')
             plt.ylabel('Close Price ($)')
-
             plt.grid(True, linestyle='--', color='#BDBDBD')
             plt.tight_layout()
+            
             st.plotly_chart(
-                close_100_fig, use_container_width=False, theme="streamlit")
+                close_100_fig, 
+                use_container_width=False, 
+                theme="streamlit"
+            )
 
         with container1.expander("Graph: Close Price v/s Time (with mean)"):
             ma100 = df.Close.rolling(100).mean()
@@ -178,15 +207,20 @@ if user_input:
             plt.plot(ma50, '#b204e8', label='Mean (50 val)')
             plt.plot(ma75, '#f104c8', label='Mean (75 val)')
             plt.plot(ma100, '#43f104', label='Mean (100 val)')
-            plt.plot(df.Close, '#e83a04', label='Closing Price')
+            plt.plot(df.Close, '#2B24DA', label='Closing Price')
+            
             plt.title(f'{user_input} Ticker plot')
             plt.legend()
             plt.xlabel('Year')
             plt.ylabel('Close Price ($)')
             plt.grid(True, linestyle='--', color='#BDBDBD')
             plt.tight_layout()
+            
             st.plotly_chart(
-                close_mean_fig, use_container_width=False, theme="streamlit")
+                close_mean_fig, 
+                use_container_width=False, 
+                theme="streamlit"
+            )
 
         if user_input:
 
@@ -229,7 +263,7 @@ if user_input:
             container2 = st.container(border=True)
             container2.subheader('Prediction of Stock Ticker')
 
-            with container2.expander("Model Details"):
+            with container2.expander("Model Description"):
                 st.write('''R² value (Coefficient of Determination) measures the proportion of variance in the dependent variable that is predictable from the independent variables. 
                         It ranges from 0 to 1, where 1 indicates a perfect fit, meaning the model explains all the variability in the target variable, while 0 means the model does not explain any variability. 
                         A higher R² value suggests a better fit of the model to the data.
@@ -251,25 +285,39 @@ if user_input:
                     st.metric("MSE Value", f"{0.0011:.4f}")
                 with col3:
                     st.metric("Precision", f"{0.9927:.4f}")
+                
+                
+                model_file_path='8_15_23_125_LXg.h5'
+                
+                with open(model_file_path,'rb') as f:
+                    model_data=f.read()
+                
+                st.download_button(
+                    label="Download Model (.h5 format)",
+                    data=model_data,
+                    file_name="model.h5",
+                    mime="application/octet-stream"
+                )
 
-            with container2.expander("Prediction Graph"):
-
-                fig2 = plt.figure(figsize=(12, 6))
-                fig2.patch.set_facecolor('#A59DDE')
-
+            with container2.expander(f"Prediction Graph: {user_input}"):
+                pred_fig2 = plt.figure(figsize=(11, 6))
+                pred_fig2.patch.set_facecolor('#A59DDE')
                 ax = plt.axes()
                 ax.set_facecolor('#C7E1F4')
 
                 plt.grid(True, linestyle='--', color='#626784')
                 plt.plot(y_test, 'g', label="Original price")
                 plt.plot(y_predicted, 'r', label="Predicted price")
-
-                plt.title("Plot between Original and Predicted Stock Price")
+                
                 plt.xlabel('No of Days')
-                plt.ylabel('Stock Price($)')
+                plt.ylabel('Ticker Price($)')
                 plt.legend()
-                st.plotly_chart(fig2, use_container_width=False,
-                                theme="streamlit")
+                
+                st.plotly_chart(
+                    pred_fig2, 
+                    use_container_width=False, 
+                    theme="streamlit"
+                )
 
         else:
             container1.write("No dataset generated")
