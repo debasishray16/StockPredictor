@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 const Dashboardview = ({ onFetchData }) => {
     const [companyCode, setCompanyCode] = useState('');
@@ -15,11 +15,11 @@ const Dashboardview = ({ onFetchData }) => {
         setLoading(true); // Start loading
 
         try {
-            await onFetchData(companyCode); // Call fetchData from props
-            setUpdatedMessage(`Ticker sent successfully: ${companyCode}`);
+            await onFetchData(companyCode); // Call fetchData from props to fetch company info
+            setUpdatedMessage(`Ticker submitted successfully: ${companyCode}`);
         } catch (error) {
-            console.error('Error sending ticker:', error);
-            const errorMessage = error.response?.data?.error || 'Error sending ticker';
+            console.error('Error submitting ticker:', error);
+            const errorMessage = error.response?.data?.error || 'Error submitting ticker';
             setUpdatedMessage(errorMessage);
         } finally {
             setLoading(false); // End loading
