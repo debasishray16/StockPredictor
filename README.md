@@ -1,5 +1,15 @@
 # Stock Prediction System
 
+LATEST UPDATE:
+
+TO RUN LATEST SITE:
+
+GO INTO FILE DIRECTORY "site_integration"
+
+```cmd
+ cd "site_integration"
+```
+
 To run streamlit application:
 
 1. Go to file directory ..Debasish Test\Previous Model
@@ -41,7 +51,7 @@ npm run start
 ```
 
 - Then ,start the server by navigating in the file.
-(final_project\stock_frontend\data_backend)
+  (final_project\stock_frontend\data_backend)
 
 ```cmd
 cd data_backend
