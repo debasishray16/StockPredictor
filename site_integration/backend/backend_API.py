@@ -8,6 +8,7 @@ import yfinance as yf
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
