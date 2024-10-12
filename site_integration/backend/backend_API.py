@@ -108,5 +108,5 @@ def company_info():
         return jsonify({"error": f"Failed to fetch company info for ticker {ticker}: {str(e)}"}), 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-    #pass
+    #app.run(host='0.0.0.0', port=5000, debug=True)
+    pass
