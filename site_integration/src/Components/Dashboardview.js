@@ -16,7 +16,7 @@ const Dashboardview = ({ onFetchData }) => {
 
         try {
             await onFetchData(companyCode); // Call fetchData from props to fetch company info
-            setUpdatedMessage(`Ticker submitted successfully: ${companyCode}`);
+            setUpdatedMessage(console.log(`Ticker submitted successfully: ${companyCode}`));
         } catch (error) {
             console.error('Error submitting ticker:', error);
             const errorMessage = error.response?.data?.error || 'Error submitting ticker';
@@ -27,7 +27,7 @@ const Dashboardview = ({ onFetchData }) => {
     };
 
     return (
-        <div className='flex items-center justify-between h-[70px] shadow-lg border-black px-[25px] bg-[#09071d]'>
+        <div className='flex items-center justify-between h-[70px] shadow-lg border-black px-[25px] bg-[#09071d] flex-shrink-0'>
             <form onSubmit={handleSubmit} className='flex items-center rounded-[5px]'>
                 <input
                     type='text'

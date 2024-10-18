@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Dashboardview from './Dashboardview';
-import Sidebar from './Sidebar';  // Import Sidebar
+import Sidebar from './Sidebar';
+import CompanyDesc from './companyDesc';
+import StockPredictionChart from './StockPredictionChart';
+import CompanyInfo from './companyInfo';
 
 const Main = () => {
   const [data, setData] = useState([]);
@@ -15,6 +17,14 @@ const Main = () => {
   const [currency, setCurrency] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [companySite, setCompanySite] = useState('');
+  const [openingPrice, setOpeningPrice] = useState('');
+  const [closingPrice, setClosingPrice] = useState('');
+  const [maxopeningPrice, setmaxopeningPrice] = useState('');
+  const [maxclosingPrice, setmaxclosingPrice] = useState('');
+  const [max_high_price, setmax_high_price] = useState('');
+  const [max_low_price, setmax_low_price] = useState('');
+  const [avg_high_price, setavg_high_price] = useState('');
+  const [avg_low_price, setavg_low_price] = useState('');
 
   // Fetch data from the backend for stock predictions
   const fetchData = useCallback(async (ticker) => {
@@ -66,14 +76,22 @@ const Main = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setCompanyName(data.company_name || 'Full name not available')
+        setCompanyName(data.company_name || 'Full name not available');
         setSector(data.sector || 'No sector information available.');
         setIndustry(data.industry || 'No industry information available.');
         setFullTimeEmployees(data.fullTimeEmployees || 'No employee data available.');
         setMarketCap(data.marketCap || 'No market cap available.');
         setCompanyDescription(data.longBusinessSummary || 'Failed to fetch company info.');
-        setCompanySite(data.website || "No website available")
-        setCurrency(data.currency || "NA");
+        setCompanySite(data.website || 'No website available');
+        setCurrency(data.currency || '');
+        setOpeningPrice(data.openingPrice || 'Opening price not available')
+        setClosingPrice(data.closingPrice || 'Closing price not available')
+        setmaxopeningPrice(data.max_opening_Price || 'Opening price not available')
+        setmaxclosingPrice(data.max_closing_Price || 'Closing price not available')
+        setmax_high_price(data.max_high_price || 'Max High price not available')
+        setmax_low_price(data.max_low_price || 'Max Low price not available')
+        setavg_high_price(data.avg_high_price || 'Avg High price not available')
+        setavg_low_price(data.avg_low_price || 'Avg Low price not available')
       } else {
         setCompanyDescription('Failed to fetch company info.');
       }
@@ -110,41 +128,15 @@ const Main = () => {
       />
       <div className="flex-grow flex flex-col overflow-auto">
         <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0' />
-        <div className="flex-grow flex flex-col overflow-auto">
-          <div className='top-0 bg-gradient-to-r from-[#14142d] to-[#0b082a] p-4'>
+        <div className="flex-grow flex flex-col overflow-auto pl-4 pr-4">
+          <div className='top-0 bg-gradient-to-r from-[#14142d] to-[#0b082a] p-4 pr-5'>
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-normal'>Dashboard</h1>
           </div>
           {/* Display long business summary here */}
-          <div className='mt-4 mb-4 pb-4 pl-4 border-2 bg-[#06061d]'>
-            <h1 className='text-[#e6e7ec] leading-[34px] font-bold px-7 p-4'>About Company</h1>
-            <p className='text-[#e6e7ec] px-7 p-4' style={{textAlign:'justify'}}>{companyDescription}</p>
-          </div>
-          <div className='mt-4 mb-4 pb-4 pl-4 border-2 bg-[#06061d]'>
-            <h1 className='text-[#e6e7ec] leading-[34px] font-bold px-7 p-4'>Original vs Prediction</h1>
-            {loading ? (
-              <p className='text-[#e6e7ec] text-[25px] leading-[34px] font-normal px-4'>Loading data...</p>
-            ) : errorMessage ? (
-              <p className='text-red-500' aria-live="polite">{errorMessage}</p>
-            ) : data.length > 0 ? (
-              <ResponsiveContainer width="95%" height={500}>
-                <LineChart data={data}>
-                  <XAxis 
-                    dataKey="day"
-                    label={{ value: 'Days', position: 'insideBottom', offset: -4 }} 
-                    ticks={data.map((_, index) => (index + 1) % 100 === 0 ? index + 1 : null).filter(Boolean)} 
-                    interval={0}
-                  />
-                  <YAxis label={{ value: 'Price (USD)', angle: -90, position: 'insideLeft' }} />
-                  <Tooltip />
-                  <Legend verticalAlign="top" align="right" />
-                  <Line type="monotone" dataKey="predictedPrice" stroke="#ff7300" dot={false} />
-                  <Line type="monotone" dataKey="originalPrice" stroke="#82ca9d" dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className='text-[#e6e7ec] text-[25px] leading-[34px] font-normal p-4'>No data available for graph.</p>
-            )}
-          </div>
+          <CompanyDesc companyDescription={companyDescription} />
+          <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price}/>
+          {/* Render StockPredictionChart here */}
+          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} />
         </div>
       </div>
     </div>
