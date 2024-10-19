@@ -7,7 +7,7 @@ import numpy as np
 import yfinance as yf
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
-
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -81,6 +81,35 @@ def company_info():
         # Fetch company info using yfinance
         stock = yf.Ticker(ticker)
         info = stock.info
+
+        # Calculate the start date for the last 9 years
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=9*365)  # Approximate for leap years
+        
+        # Calculate the start date for the last 52 weeks (1 year)
+        end_date2 = datetime.now()
+        start_date2 = end_date - timedelta(weeks=52)
+
+        # Fetch historical data for the last 9 years
+        historical_data = stock.history(start=start_date, end=end_date)
+        
+        # Fetch historical data for the last 52 weeks
+        historical_data2 = stock.history(start=start_date2, end=end_date2)
+
+        # Get the most recent opening and closing prices
+        latest_opening_price = historical_data['Open'].iloc[-1]
+        latest_closing_price = historical_data['Close'].iloc[-1]
+
+        # Calculate the maximum opening and closing prices till date
+        max_opening_price = historical_data['Open'].max()
+        max_closing_price = historical_data['Close'].max()
+        
+        # Calculate average high and low prices over the last 52 weeks
+        avg_high_price = historical_data2['High'].mean()
+        avg_low_price = historical_data2['Low'].mean()
+        
+        max_high_price = historical_data2['High'].max()
+        max_low_price = historical_data2['Low'].min()
         
         #Company info extraction
         company_name = info.get("longName", "Company name not available.")
@@ -101,7 +130,15 @@ def company_info():
             "fullTimeEmployees": fullTimeEmployees,
             "website": website,
             "marketCap": marketCap,
-            "currency": currency
+            "currency": currency,
+            "openingPrice": latest_opening_price,
+            "closingPrice": latest_closing_price,
+            "max_opening_Price": max_opening_price,
+            "max_closing_Price": max_closing_price,
+            "max_high_price": max_high_price,
+            "max_low_price": max_low_price,
+            "avg_high_price": avg_high_price,
+            "avg_low_price": avg_low_price
         }
 
         return jsonify(company_summary)
