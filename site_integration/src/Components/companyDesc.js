@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
 const CompanyDesc = ({ companyDescription }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   // Function to toggle collapse state
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  // Automatically expand when companyDescription is received
+  useEffect(() => {
+    if (companyDescription) {
+      setIsCollapsed(false);
+    }
+  }, [companyDescription]);
 
   return (
     <div className='mt-4 mb-4 pb-1 pl-4 bg-[#06061d] rounded-lg'>
@@ -22,9 +29,7 @@ const CompanyDesc = ({ companyDescription }) => {
       </div>
 
       {/* Collapsible content with animation */}
-      <div
-        className={`transition-all duration-500 ease-in-out overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-screen'}`}
-      >
+      <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-screen'}`}>
         <p className='text-[#e6e7ec] px-7 p-4' style={{ textAlign: 'justify' }}>
           {companyDescription}
         </p>

@@ -1,4 +1,3 @@
-import pandas_datareader.data as web
 import tensorflow as tf
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # Import CORS
@@ -24,7 +23,11 @@ def predict():
 
     try:
         # Retrieve stock data from Yahoo Finance
-        df = web.DataReader(ticker, 'stooq', start, end)
+        df = yf.download(ticker, start=start, end=end)
+        
+        # Check if sufficient data is available
+        if df.empty or len(df) < 100:
+            return jsonify({"error": "Not enough data to calculate moving average."}), 400
     except Exception as e:
         return jsonify({"error": f"Failed to fetch data for ticker {ticker}: {str(e)}"}), 400
 
@@ -59,11 +62,22 @@ def predict():
     scale_factor = 1/scaler[0]
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
+    
+    # Calculate 100-day moving average
+    ma100 = df['Close'].rolling(window=100).mean().dropna()
 
-    # Prepare the response
+    # Prepare the response, ensuring to align lengths
+    closing_prices = df['Close'].values.tolist()
+    mean_avg_100 = ma100.values.tolist()
+
+    # Align lengths
+    closing_prices = closing_prices[-len(mean_avg_100):]  # Adjust closing prices to match the length of the moving average
+
     response_data = {
-        'predictions': y_predicted.flatten().tolist(), 
-        'original': y_test.flatten().tolist()  # Convert to list for JSON serialization
+        'predictions': y_predicted.flatten().tolist(),
+        'original': y_test.flatten().tolist(),
+        'closing_price': closing_prices,
+        'mean_avg_100': mean_avg_100
     }
 
     return jsonify(response_data)
