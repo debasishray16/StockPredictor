@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import CompanyDesc from './companyDesc';
 import StockPredictionChart from './StockPredictionChart';
 import CompanyInfo from './companyInfo';
+import AboutModel from './aboutModel';
 
 const Main = () => {
   const [data, setData] = useState([]);
@@ -30,7 +31,7 @@ const Main = () => {
   const fetchData = useCallback(async (ticker) => {
     setLoading(true);
     setErrorMessage('');
-
+  
     try {
       const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
@@ -39,22 +40,42 @@ const Main = () => {
         },
         body: JSON.stringify({ ticker }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const result = await response.json();
       const priceArray = result.predictions;
       const originalPriceArray = result.original;
-
+      const closingPrice_graph = result.closing_price;
+      const mean_avg_price = result.mean_avg_100;
+  
+      // Formatting data for prediction vs original graph
       const formattedData = priceArray.map((price, index) => ({
         day: index + 1,
         predictedPrice: price,
         originalPrice: originalPriceArray[index]
       }));
+  
+      // Formatting data for closing price vs time graph
+      const closingPriceData = closingPrice_graph.map((price, index) => ({
+        day: index + 1,
+        closingPrice: price,
+      }));
 
-      setData(formattedData);
+      // Formatting data for prediction vs original graph
+      const closingvsmean = mean_avg_price.map((price, index) => ({
+        day: index + 1,
+        mean_avg_100: price,
+        closingPriceData: closingPrice_graph[index]
+      }));
+  
+      setData({
+        predictionData: formattedData,
+        closingPriceData: closingPriceData,
+        closingvsmean: closingvsmean,
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
       setErrorMessage('Error fetching data. Please try again.');
@@ -100,14 +121,6 @@ const Main = () => {
     }
   }, []);
 
-  // Function to handle ticker selection from the Sidebar
-  const handleSelectOption = (ticker) => {
-    if (ticker) {
-      fetchData(ticker);  // Fetch stock prediction data
-      fetchCompanyInfo(ticker);  // Fetch company info
-    }
-  };
-
   // Function to handle ticker submission from the Dashboardview input box
   const handleFetchData = (ticker) => {
     fetchData(ticker);  // Fetch stock prediction data
@@ -117,7 +130,6 @@ const Main = () => {
   return (
     <div className="h-screen flex bg-gradient-to-r from-[#14142d] to-[#0b082a] overflow-hidden">
       <Sidebar 
-        onSelectOption={handleSelectOption} 
         sector={sector} 
         industry={industry} 
         fullTimeEmployees={fullTimeEmployees} 
@@ -127,16 +139,17 @@ const Main = () => {
         currency={currency}
       />
       <div className="flex-grow flex flex-col overflow-auto">
-        <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0' />
+        <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0' onSelectOption={handleFetchData} />
         <div className="flex-grow flex flex-col overflow-auto pl-4 pr-4">
           <div className='top-0 bg-gradient-to-r from-[#14142d] to-[#0b082a] p-4 pr-5'>
-            <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-normal'>Dashboard</h1>
+            <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
           </div>
           {/* Display long business summary here */}
           <CompanyDesc companyDescription={companyDescription} />
           <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price}/>
           {/* Render StockPredictionChart here */}
-          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} />
+          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName}/>
+          <AboutModel/>
         </div>
       </div>
     </div>
