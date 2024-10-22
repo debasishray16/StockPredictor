@@ -69,7 +69,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                     interval={0}
                   />
                 )}
-                    {selectedGraph === 'Mean Value Analysis' && (
+                {selectedGraph === 'Mean Value Analysis' && (
                   <XAxis
                     dataKey="day"
                     label={{ value: 'Days', position: 'insideBottom', offset: -2 }}
