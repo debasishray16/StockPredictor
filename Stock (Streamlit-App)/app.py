@@ -54,7 +54,7 @@ with st.sidebar:
 
 
 # Taking input from user.
-ticker_list = ["JPM", "GOOG", "AAPL", "MMM", "MPZ", "AMZN","ARCC","MGK","IEP","AAP","ACEL","ACM","ADSK","ATO","SMCI","SRRK","AJX","CBT","CME","ASX","XOM","NVDA","WFC","BA","AAL","MA","AA","AG","APA","AR","PAA","EA"]
+ticker_list = ["JPM", "GOOG", "AAPL", "MMM", "AMZN","MGK","IEP","AAP","ACEL","ACM","ADSK","ATO","SMCI","SRRK","AJX","CBT","CME","ASX","XOM","NVDA","WFC","BA","AAL","MA","AA","AG","APA","AR","PAA","EA"]
 user_input = st.selectbox(
     "Enter Company Ticker",
     ticker_list,
