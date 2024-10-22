@@ -21,8 +21,8 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
     switch (selectedGraph) {
       case 'Closing Price vs Time':
         return { data: closingPriceData, dataKey: 'closingPrice', yAxisLabel: `Closing Price (${currency})` };
-      case 'Closing vs Mean(100 Days)':
-        return { data: closingvsmean, dataKey: 'mean_avg_100', yAxisLabel: `Price (${currency})` };
+      case 'Mean Value Analysis':
+        return { data: closingvsmean, dataKey: 'mean_avg_price75', yAxisLabel: `Price (${currency})` };
       case 'Original vs Prediction':
         return { data: predictionData, dataKey: 'predictedPrice', yAxisLabel: `Price (${currency})` };
       default:
@@ -35,14 +35,14 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
   return (
     <div className="mt-4 mb-4 p-2 pl-4 bg-[#06061d] rounded-lg">
       <div className="text-[#e6e7ec] leading-[34px] font-bold px-7 grid grid-cols-2 gap-[55%] mt-[25px] pb-3">
-        <p className='w-[500px]'>{companyName} Graphs</p>
+        <p className='w-[500px]'>{companyName} Graph Analysis</p>
         <select
           value={selectedGraph}
           onChange={(e) => setSelectedGraph(e.target.value)}
           className="bg-[#101830] text-[#e6e7ec] rounded p-2"
         >
           <option value="Closing Price vs Time">Closing Price vs Time</option>
-          <option value="Closing vs Mean(100 Days)">Closing vs Mean(100 Days)</option>
+          <option value="Mean Value Analysis">Mean Value Analysis</option>
           <option value="Original vs Prediction">Original vs Prediction</option>
         </select>
       </div>
@@ -69,7 +69,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                     interval={0}
                   />
                 )}
-                {selectedGraph === 'Closing vs Mean(100 Days)' && (
+                    {selectedGraph === 'Mean Value Analysis' && (
                   <XAxis
                     dataKey="day"
                     label={{ value: 'Days', position: 'insideBottom', offset: -2 }}
@@ -103,10 +103,11 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                 {selectedGraph === 'Closing Price vs Time' && (
                   <Line type="monotone" dataKey="closingPrice" name="Closing Price" stroke="#8884d8" dot={false} />
                 )}
-                {selectedGraph === 'Closing vs Mean(100 Days)' && (
+                {selectedGraph === 'Mean Value Analysis' && (
                   <>
                     <Line type="monotone" dataKey="closingPriceData" name="Closing Price" stroke="#8884d8" dot={false} />
-                    <Line type="monotone" dataKey="mean_avg_100" name="Mean (100 Days)" stroke="#dee437" dot={false} />
+                    <Line type="monotone" dataKey="mean_avg_price75" name="Mean (75 Days)" stroke="#e74ac7" dot={false} />
+                    <Line type="monotone" dataKey="mean_avg_price50" name="Mean (50 Days)" stroke="#f4a44b" dot={false} />
                   </>
                 )}
                 {selectedGraph === 'Original vs Prediction' && (

@@ -31,7 +31,7 @@ const Main = () => {
   const fetchData = useCallback(async (ticker) => {
     setLoading(true);
     setErrorMessage('');
-  
+
     try {
       const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
@@ -40,24 +40,25 @@ const Main = () => {
         },
         body: JSON.stringify({ ticker }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-  
+
       const result = await response.json();
       const priceArray = result.predictions;
       const originalPriceArray = result.original;
       const closingPrice_graph = result.closing_price;
-      const mean_avg_price = result.mean_avg_100;
-  
+      const mean_avg_price75 = result.mean_avg_75;
+      const mean_avg_price50 = result.mean_avg_50;
+
       // Formatting data for prediction vs original graph
       const formattedData = priceArray.map((price, index) => ({
         day: index + 1,
         predictedPrice: price,
         originalPrice: originalPriceArray[index]
       }));
-  
+
       // Formatting data for closing price vs time graph
       const closingPriceData = closingPrice_graph.map((price, index) => ({
         day: index + 1,
@@ -65,12 +66,13 @@ const Main = () => {
       }));
 
       // Formatting data for prediction vs original graph
-      const closingvsmean = mean_avg_price.map((price, index) => ({
+      const closingvsmean = closingPrice_graph.map((price, index) => ({
         day: index + 1,
-        mean_avg_100: price,
-        closingPriceData: closingPrice_graph[index]
+        closingPriceData: price,
+        mean_avg_price75: mean_avg_price75[index],
+        mean_avg_price50: mean_avg_price50[index]
       }));
-  
+
       setData({
         predictionData: formattedData,
         closingPriceData: closingPriceData,
@@ -129,12 +131,12 @@ const Main = () => {
 
   return (
     <div className="h-screen flex bg-gradient-to-r from-[#14142d] to-[#0b082a] overflow-hidden">
-      <Sidebar 
-        sector={sector} 
-        industry={industry} 
-        fullTimeEmployees={fullTimeEmployees} 
+      <Sidebar
+        sector={sector}
+        industry={industry}
+        fullTimeEmployees={fullTimeEmployees}
         marketCap={marketCap}
-        companyName={companyName} 
+        companyName={companyName}
         companySite={companySite}
         currency={currency}
       />
@@ -145,11 +147,11 @@ const Main = () => {
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
           </div>
           {/* Display long business summary here */}
-          <CompanyDesc companyDescription={companyDescription} />
-          <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price}/>
+          <CompanyDesc companyDescription={companyDescription}/>
+          <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
           {/* Render StockPredictionChart here */}
-          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName}/>
-          <AboutModel/>
+          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} />
+          <AboutModel />
         </div>
       </div>
     </div>

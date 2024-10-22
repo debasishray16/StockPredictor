@@ -64,10 +64,10 @@ const CompanyInfo = ({ currency, openingPrice, closingPrice, maxOpen, maxClose, 
             </h2>
             <h1 className='text-[20px] leading-[24px] font-bold text-[#d0d4ee] mt-[5px] relative'>
               <span className={`block transition-all transform duration-500 ease-in-out ${showMaxEmployees ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}>
-                {Intl.NumberFormat('en-US').format(avg_high_price)}
+                {Intl.NumberFormat('en-US').format(avg_high_price)} {currency}
               </span>
               <span className={`block transition-all transform duration-500 ease-in-out absolute top-0 left-0 w-full ${showMaxEmployees ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}>
-                {Intl.NumberFormat('en-US').format(max_high_price)}
+                {Intl.NumberFormat('en-US').format(max_high_price)} {currency}
               </span>
             </h1>
           </div>
@@ -85,10 +85,10 @@ const CompanyInfo = ({ currency, openingPrice, closingPrice, maxOpen, maxClose, 
             </h2>
             <h1 className='text-[20px] leading-[24px] font-bold text-[#d0d4ee] mt-[5px] relative'>
               <span className={`block transition-all transform duration-500 ease-in-out ${showMaxMarketCap ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}>
-                {Intl.NumberFormat('en-US').format(avg_low_price)}
+                {Intl.NumberFormat('en-US').format(avg_low_price)} {currency}
               </span>
               <span className={`block transition-all transform duration-500 ease-in-out absolute top-0 left-0 w-full ${showMaxMarketCap ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}>
-                {Intl.NumberFormat('en-US').format(max_low_price)}
+                {Intl.NumberFormat('en-US').format(max_low_price)} {currency}
               </span>
             </h1>
           </div>

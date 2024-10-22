@@ -64,20 +64,23 @@ def predict():
     y_test = y_test * scale_factor
     
     # Calculate 100-day moving average
-    ma100 = df['Close'].rolling(window=100).mean().dropna()
+    ma75 = df['Close'].rolling(window=75).mean().dropna()
+    ma50 = df['Close'].rolling(window=50).mean().dropna()
 
     # Prepare the response, ensuring to align lengths
     closing_prices = df['Close'].values.tolist()
-    mean_avg_100 = ma100.values.tolist()
+    mean_avg_50 = ma50.values.tolist()
+    mean_avg_75 = ma75.values.tolist()
 
     # Align lengths
-    closing_prices = closing_prices[-len(mean_avg_100):]  # Adjust closing prices to match the length of the moving average
+    closing_prices = closing_prices[-len(mean_avg_75):]  # Adjust closing prices to match the length of the moving average
 
     response_data = {
         'predictions': y_predicted.flatten().tolist(),
         'original': y_test.flatten().tolist(),
         'closing_price': closing_prices,
-        'mean_avg_100': mean_avg_100
+        'mean_avg_75': mean_avg_75,
+        'mean_avg_50': mean_avg_50
     }
 
     return jsonify(response_data)

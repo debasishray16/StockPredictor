@@ -10,7 +10,7 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
         setCompanyCode(event.target.value);
     };
 
-        const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
 
     const handleChange = (event) => {
         const selectedValue = event.target.value;
@@ -54,25 +54,25 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                 </button>
                 <p className='ml-2 text-white'>{updatedMessage}</p>
             </form>
-            <div className= 'py-4 cursor-pointer'>
-            <label htmlFor="dropdown" className='text-[15px] leading-[20px] py-[20px] pr-[20px] font-bold #1e1e2d text-[#c7cad8]'> Or Select an option:</label>
-            <select
-            id="dropdown"
-            value={selectedOption}
-            onChange={handleChange}
-            className="rounded p-2 bg-[#101830] text-[#c7cad8]">
-            <option value="">Choose an option</option>
-            <option value="JPM">J.P. Morgan</option>
-            <option value="AAPL">Apple</option>
-            <option value="GOOG">Google</option>
-            <option value="AMZN">Amazon</option>
-            <option value="ARCC">Ares Capital Corporation</option>
-            <option value="MMM">3M Company</option>
-            <option value="MGK">MGK</option>
-            <option value="IEP">Icahn Enterprises L.P.</option>
-            <option value="AAP">Advance Auto Parts, Inc.</option>
-          </select>
-        </div>
+            <div className='py-4 cursor-pointer'>
+                <label htmlFor="dropdown" className='text-[15px] leading-[20px] py-[20px] pr-[20px] font-bold #1e1e2d text-[#c7cad8]'> Or Select an option:</label>
+                <select
+                    id="dropdown"
+                    value={selectedOption}
+                    onChange={handleChange}
+                    className="rounded p-2 bg-[#101830] text-[#c7cad8]">
+                    <option value="">Choose an option</option>
+                    <option value="JPM">J.P. Morgan</option>
+                    <option value="AAPL">Apple</option>
+                    <option value="GOOG">Google</option>
+                    <option value="AMZN">Amazon</option>
+                    <option value="ARCC">Ares Capital Corporation</option>
+                    <option value="MMM">3M Company</option>
+                    <option value="MGK">MGK</option>
+                    <option value="IEP">Icahn Enterprises L.P.</option>
+                    <option value="AAP">Advance Auto Parts, Inc.</option>
+                </select>
+            </div>
         </div>
     );
 };
