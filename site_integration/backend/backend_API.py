@@ -39,7 +39,7 @@ def predict():
     data_training_array = scaler.fit_transform(data_training)
 
     # Load Model
-    model = tf.keras.models.load_model('../Model-Modified/8_15_23_125_LXg.h5', compile=False)
+    model = tf.keras.models.load_model('../model/8_15_23_125_LXg.h5', compile=False)
 
     # Testing part
     past_100_days = data_training.tail(100)
