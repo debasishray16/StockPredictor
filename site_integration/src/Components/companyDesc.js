@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
-const CompanyDesc = ({ companyDescription }) => {
+const CompanyDesc = ({ companyDescription, loading }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   // Function to toggle collapse state
@@ -30,9 +30,12 @@ const CompanyDesc = ({ companyDescription }) => {
 
       {/* Collapsible content with animation */}
       <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-screen'}`}>
-        <p className='text-[#e6e7ec] px-7 p-4' style={{ textAlign: 'justify' }}>
-          {companyDescription}
-        </p>
+        {loading ? (
+          <p className='text-[#e6e7ec] px-7 p-4' style={{ textAlign: 'justify' }}>
+            {companyDescription}
+          </p>
+        ) : (<p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 p-4 flex items-center justify-center">No ticker selected</p>
+        )}
       </div>
     </div>
   );
