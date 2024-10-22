@@ -136,7 +136,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 p-4 flex items-center justify-center">No data available for graph.</p>
+            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 p-4 flex items-center justify-center">No data available for graph</p>
           )}
         </div>
       </div>

@@ -167,7 +167,7 @@ const Main = () => {
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
           </div>
           {/* Display long business summary here */}
-          <CompanyDesc companyDescription={companyDescription} />
+          <CompanyDesc companyDescription={companyDescription} loading={loading} />
           <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
           {/* Render StockPredictionChart here */}
           <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} dates={dates} monthlyLabels={monthlyLabels} />
