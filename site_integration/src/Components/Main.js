@@ -26,6 +26,9 @@ const Main = () => {
   const [max_low_price, setmax_low_price] = useState('');
   const [avg_high_price, setavg_high_price] = useState('');
   const [avg_low_price, setavg_low_price] = useState('');
+  const [lastClosingPrice, setLastClosingPrice] = useState('');
+  const [dates, setDates] = useState([]);
+  const [monthlyLabels, setMonthlyLabels] = useState([]);
 
   // Fetch data from the backend for stock predictions
   const fetchData = useCallback(async (ticker) => {
@@ -48,36 +51,53 @@ const Main = () => {
       const result = await response.json();
       const priceArray = result.predictions;
       const originalPriceArray = result.original;
-      const closingPrice_graph = result.closing_price;
-      const mean_avg_price75 = result.mean_avg_75;
-      const mean_avg_price50 = result.mean_avg_50;
+      const closingPriceGraph = result.closing_price;
+      const meanAvgPrice75 = result.mean_avg_75;
+      const meanAvgPrice50 = result.mean_avg_50;
+      const original1Year = result.original_last1;
+      const combined_predictions = result.combined_predictions;
+      const dates = result.dates; // Daily dates
+      const monthlyLabels = result.monthly_labels; // Monthly labels
 
       // Formatting data for prediction vs original graph
       const formattedData = priceArray.map((price, index) => ({
         day: index + 1,
         predictedPrice: price,
-        originalPrice: originalPriceArray[index]
+        originalPrice: originalPriceArray[index],
+      }));
+
+      const futurePredictionData = combined_predictions.map((price, index) => ({
+        day: index + 1,
+        combined_predictions: price,
+        original_1year: original1Year[index]
       }));
 
       // Formatting data for closing price vs time graph
-      const closingPriceData = closingPrice_graph.map((price, index) => ({
+      const closingPriceData = closingPriceGraph.map((price, index) => ({
         day: index + 1,
         closingPrice: price,
       }));
 
-      // Formatting data for prediction vs original graph
-      const closingvsmean = closingPrice_graph.map((price, index) => ({
+      // Formatting data for closing price vs mean averages
+      const closingvsmean = closingPriceGraph.map((price, index) => ({
         day: index + 1,
         closingPriceData: price,
-        mean_avg_price75: mean_avg_price75[index],
-        mean_avg_price50: mean_avg_price50[index]
+        mean_avg_price75: meanAvgPrice75[index],
+        mean_avg_price50: meanAvgPrice50[index],
       }));
 
       setData({
         predictionData: formattedData,
         closingPriceData: closingPriceData,
         closingvsmean: closingvsmean,
+        futurePredictionData: futurePredictionData, // Contains both month and date
       });
+
+
+      // Set additional data for last closing price, 1-year predictions, etc.
+      setLastClosingPrice(original1Year);
+      setDates(dates);
+      setMonthlyLabels(monthlyLabels);
     } catch (error) {
       console.error('Error fetching data:', error);
       setErrorMessage('Error fetching data. Please try again.');
@@ -147,10 +167,10 @@ const Main = () => {
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
           </div>
           {/* Display long business summary here */}
-          <CompanyDesc companyDescription={companyDescription}/>
+          <CompanyDesc companyDescription={companyDescription} />
           <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
           {/* Render StockPredictionChart here */}
-          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} />
+          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} dates={dates} monthlyLabels={monthlyLabels} />
           <AboutModel />
         </div>
       </div>
