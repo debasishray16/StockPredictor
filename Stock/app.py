@@ -10,6 +10,8 @@ import streamlit as st
 import streamlit_lottie
 from streamlit_lottie import st_lottie
 
+
+from nasdaq_list import symbol_list
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 import keras
@@ -35,8 +37,7 @@ st.set_page_config(
 )
 
 st.title('Stock-Ticker Predictor')
-st.image("images/financial-horizontal-banner-business-economy-260nw-624214175.webp",
-        use_column_width="always")
+
 
 with st.sidebar:
     st.title("Stock Prediction System using Stacked-LSTM with XGBoost")
@@ -54,7 +55,7 @@ with st.sidebar:
 
 
 # Taking input from user.
-ticker_list = ["JPM", "GOOG", "AAPL", "MMM", "AMZN","MGK","IEP","AAP","ACEL","ACM","ADSK","ATO","SMCI","SRRK","AJX","CBT","CME","ASX","XOM","NVDA","WFC","BA","AAL","MA","AA","AG","APA","AR","PAA","EA"]
+ticker_list = symbol_list
 user_input = st.selectbox(
     "Enter Company Ticker",
     ticker_list,
