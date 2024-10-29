@@ -54,7 +54,7 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
           <p><strong> Market Cap - </strong> {Intl.NumberFormat('en-US').format(marketCap || '--')} {currency}</p>
         </div>
 
-        <button className='mb-6 p-4 ml-12 mt-10 rounded-lg text-[#c7cad8] border-b border-[#EDEDED] border-opacity-70 w-3/5 transition ease-in-out bg-[#06061d] delay-150 hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 duration-400'><a href={companySite} target="_blank" rel="noopener noreferrer "><strong>Company Website</strong></a></button>
+        <button className='mb-6 p-3 ml-6 mt-10 rounded-lg text-[#c7cad8] border-b border-[#EDEDED] border-opacity-70 w-4/5 transition ease-in-out bg-[#06061d] delay-150 hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 duration-400'><a href={companySite} target="_blank" rel="noopener noreferrer "><strong>Company Website</strong></a></button>
 
         {/* Duplicate section for demo */}
         <div className='flex-col items-center gap-[15px] py-4'>
@@ -64,7 +64,7 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
               Debasish Ray
             </p>
             <a className='text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8] text-right hover:underline' href="https://github.com/debasishray16" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-github"> Github </i> 
+              <i class="bi bi-github"> Github </i>
             </a>
           </div>
           <div className='grid grid-cols-2 bg-[#06061d] rounded-lg'>
@@ -72,7 +72,7 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
               Utkarsh Raj Sinha
             </p>
             <a className='text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8] text-right hover:underline' href='https://github.com/gamecoder08' target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-github"> Github </i> 
+              <i class="bi bi-github"> Github </i>
             </a>
           </div>
         </div>

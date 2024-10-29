@@ -54,6 +54,7 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                 </button>
                 <p className='ml-2 text-white'>{updatedMessage}</p>
             </form>
+            {/*
             <div className='py-4 cursor-pointer'>
                 <label htmlFor="dropdown" className='text-[15px] leading-[20px] py-[20px] pr-[20px] font-bold #1e1e2d text-[#c7cad8]'> Or Select an option:</label>
                 <select
@@ -73,6 +74,7 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                     <option value="AAP">Advance Auto Parts, Inc.</option>
                 </select>
             </div>
+            */}
         </div>
     );
 };
