@@ -161,7 +161,7 @@ const Main = () => {
         currency={currency}
       />
       <div className="flex-grow flex flex-col overflow-auto">
-        <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0' onSelectOption={handleFetchData} />
+        <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0 ' onSelectOption={handleFetchData} />
         <div className="flex-grow flex flex-col overflow-auto pl-4 pr-4">
           <div className='top-0 bg-gradient-to-r from-[#14142d] to-[#0b082a] p-4 pr-5'>
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
