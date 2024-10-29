@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
-const CompanyDesc = ({ companyDescription }) => {
+const CompanyDesc = ({ companyDescription, loading }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   // Function to toggle collapse state

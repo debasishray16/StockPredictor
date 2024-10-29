@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
-const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName }) => {
+const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName, dates, monthlyLabels }) => {
   const [selectedGraph, setSelectedGraph] = useState('Closing Price vs Time');
   const [isGraphCollapsed, setIsGraphCollapsed] = useState(true);
 
-  const { predictionData = [], closingPriceData = [], closingvsmean = [] } = data;
+  const { predictionData = [], closingPriceData = [], closingvsmean = [], futurePredictionData = [] } = data;
 
   // Automatically expand when data is available
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
       setIsGraphCollapsed(false);
-      setSelectedGraph('Original vs Prediction')
+      setSelectedGraph('Original vs Prediction');
     }
   }, [data]);
 
@@ -23,8 +23,10 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
         return { data: closingPriceData, dataKey: 'closingPrice', yAxisLabel: `Closing Price (${currency})` };
       case 'Mean Value Analysis':
         return { data: closingvsmean, dataKey: 'mean_avg_price75', yAxisLabel: `Price (${currency})` };
-      case 'Original vs Prediction':
+      case 'Training vs Testing':
         return { data: predictionData, dataKey: 'predictedPrice', yAxisLabel: `Price (${currency})` };
+      case 'Original vs Prediction':
+        return { data: futurePredictionData, dataKey: 'original_1year', yAxisLabel: `Price (${currency})` };
       default:
         return { data: [], dataKey: '', yAxisLabel: '' };
     }
@@ -44,6 +46,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
           <option value="Closing Price vs Time">Closing Price vs Time</option>
           <option value="Mean Value Analysis">Mean Value Analysis</option>
           <option value="Original vs Prediction">Original vs Prediction</option>
+          <option value="Training vs Testing">Training vs Testing</option>
         </select>
       </div>
       <div className="rounded-lg mt-4 border border-[#EDEDED] border-opacity-30 mr-2 pb-1">
@@ -77,6 +80,14 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                     interval={0}
                   />
                 )}
+                {selectedGraph === 'Training vs Testing' && (
+                  <XAxis
+                    dataKey="day"
+                    label={{ value: 'Days', position: 'insideBottom', offset: -2 }}
+                    ticks={graphData.map((_, index) => (index + 1) % 100 === 0 ? index + 1 : null).filter(Boolean)}
+                    interval={0}
+                  />
+                )}
                 {selectedGraph === 'Original vs Prediction' && (
                   <XAxis
                     dataKey="day"
@@ -88,12 +99,12 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                 <YAxis label={{ value: yAxisLabel, angle: -90, position: 'insideLeft' }} />
                 <Tooltip
                   formatter={(value, name) => {
-                    if (selectedGraph === 'Original vs Prediction') {
+                    if (selectedGraph === 'Training vs Testing ' || selectedGraph === 'Original vs Prediction') {
                       return name === 'original'
-                        ? [`${parseFloat(value).toFixed(2)} USD`, 'Original Price']
-                        : [`${parseFloat(value).toFixed(2)} USD`, 'Predicted Price'];
+                        ? [`${parseFloat(value).toFixed(2)} ${currency}`, 'Original Price']
+                        : [`${parseFloat(value).toFixed(2)} ${currency}`, 'Predicted Price'];
                     }
-                    return [`${parseFloat(value).toFixed(2)} USD`, name];
+                    return [`${parseFloat(value).toFixed(2)} ${currency}`, name];
                   }}
                   labelFormatter={() => ``}
                 />
@@ -110,16 +121,22 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                     <Line type="monotone" dataKey="mean_avg_price50" name="Mean (50 Days)" stroke="#f4a44b" dot={false} />
                   </>
                 )}
-                {selectedGraph === 'Original vs Prediction' && (
+                {selectedGraph === 'Training vs Testing' && (
                   <>
                     <Line type="monotone" dataKey="originalPrice" name="Original Price" stroke="#82ca9d" dot={false} />
                     <Line type="monotone" dataKey="predictedPrice" name="Predicted Price" stroke="#ff7300" dot={false} />
                   </>
                 )}
+                {selectedGraph === 'Original vs Prediction' && (
+                  <>
+                    <Line type="monotone" dataKey="original_1year" name="Original Price" stroke="#82ca9d" dot={false} />
+                    <Line type="monotone" dataKey="combined_predictions" name="Predicted Price" stroke="#ff7300" dot={false} />
+                  </>
+                )}
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 p-4 flex items-center justify-center">No data available for graph.</p>
+            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 p-4 flex items-center justify-center">No data available for graph</p>
           )}
         </div>
       </div>
