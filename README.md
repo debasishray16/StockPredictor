@@ -92,7 +92,7 @@ docker stop debasishray/streamlit-app:v1.0
 
 ### Contributors
 
-<div align="center">
+<div align="right">
  <a href="https://github.com/debasishray16/StockPredictor/graphs/contributors">
    <img src="https://contrib.rocks/image?repo=debasishray16/StockPredictor" />
  </a>
