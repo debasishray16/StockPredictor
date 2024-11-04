@@ -7,6 +7,7 @@ import yfinance as yf
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -93,13 +94,16 @@ def predict():
     ticker = data.get('ticker')
     start = '2015-01-01'
     end = '2023-12-31'
-
+    custom_start = data.get('start', '2015-01-01')
+    custom_end = data.get('end', '2023-01-01')
+ 
     if not ticker:
         return jsonify({"error": "Ticker is required"}), 400
 
     try:
         # Retrieve stock data from Yahoo Finance
         df = yf.download(ticker, start=start, end=end)
+        df['Date'] = df.index
 
         # Check if sufficient data is available
         if df.empty or len(df) < 100:
@@ -114,10 +118,10 @@ def predict():
     scaler = MinMaxScaler(feature_range=(0, 1))
 
     # Load Model
-    model = tf.keras.models.load_model('../model/8_15_23_125_LXg.h5', compile=False)
+    model = tf.keras.models.load_model('../model/8_15_23_300_LXg.h5', compile=False)
 
     # Testing part
-    past_100_days = data_training.tail(365)
+    past_100_days = data_training.tail(100)
     final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
 
     input_data = scaler.fit_transform(final_df)
@@ -138,6 +142,9 @@ def predict():
     y_predicted = y_predicted * scale_factor
     y_test = y_test * scale_factor
     
+    # Date alignment
+    testing_dates = df['Date'].iloc[int(len(df) * 0.70):].tolist()
+    
     # Calculate 100-day moving average
     ma75 = df['Close'].rolling(window=75).mean().dropna()
     ma50 = df['Close'].rolling(window=50).mean().dropna()
@@ -155,8 +162,9 @@ def predict():
     eight_year_ago = (datetime.now() - timedelta(days=365*8)).strftime('%Y-%m-%d')
 
     try:
-        # Retrieve stock data from Yahoo Finance (1 year before today to today)
+        # Retrieve stock data from Yahoo Finance (8 year before today to today)
         df2 = yf.download(ticker, start=eight_year_ago, end=today)
+        df2['Date'] = df2.index
 
         # Check if sufficient data is available
         if df2.empty or len(df2) < 100:
@@ -171,10 +179,12 @@ def predict():
     scaler2 = MinMaxScaler(feature_range=(0, 1))
 
     # Testing part (Using last 100 days from the current date)
-    past_100_days2 = data_training2.tail(100)
+    past_100_days2 = data_training2.tail(365)
     final_df2 = pd.concat([past_100_days2, data_testing2], ignore_index=True)
+    
 
     input_data2 = scaler2.fit_transform(final_df2)
+    
 
     x_test2 = []
     y_test2 = []
@@ -182,19 +192,26 @@ def predict():
     for i in range(100, input_data2.shape[0]):
         x_test2.append(input_data2[i - 100: i])
         y_test2.append(input_data2[i, 0])
+        
+    
 
     x_test2, y_test2 = np.array(x_test2), np.array(y_test2)
     y_predicted2 = model.predict(x_test2)
+    
 
     scaler2 = scaler2.scale_
 
     scale_factor2 = 1/scaler2[0]
     y_predicted2 = y_predicted2 * scale_factor2
     y_test2 = y_test2 * scale_factor2
+    
+    # Date alignment
+    testing_dates2 = df2['Date'].iloc[int(len(df) * 0.70):].tolist()
 
     # 1 Month Future Prediction (using last 100 days)
     future_input = input_data2[-100:]
     future_predictions = []
+    future_dates = pd.date_range(start=testing_dates2[-1], periods=30, freq='D')
     count = 0
 
     while count < 30:  # Predict for 30 days
@@ -225,9 +242,9 @@ def predict():
     months = pd.date_range(start=eight_year_ago, periods=len(df2)+30, freq='ME').strftime('%Y-%m').tolist()
 
     combined_predictions = y_predicted2.flatten().tolist() + future_predictions
+    combined_dates = testing_dates2 +list(future_dates)
     
-    padded_last_1cp = y_test2.flatten().tolist()
-
+    padded_last_8cp = y_test2.flatten().tolist()
 
     response_data = {
         'predictions': y_predicted.flatten().tolist(),
@@ -235,9 +252,9 @@ def predict():
         'closing_price': closing_prices,
         'mean_avg_75': mean_avg_75,
         'mean_avg_50': mean_avg_50,
-        'original_last1': padded_last_1cp,
+        'original_last8': padded_last_8cp,
         'combined_predictions': combined_predictions,
-        'dates': date_range.strftime('%Y-%m-%d').tolist(),
+        'combined_dates': combined_dates,
         'monthly_labels': months  
     }
 

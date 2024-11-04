@@ -29,6 +29,12 @@ const Main = () => {
   const [lastClosingPrice, setLastClosingPrice] = useState('');
   const [dates, setDates] = useState([]);
   const [monthlyLabels, setMonthlyLabels] = useState([]);
+  const [customDateRange, setCustomDateRange] = useState({ start: '', end: '' });
+  const [combinedDates, setcombinedDates] = useState([]);
+  const handleDateRangeChange = (newDateRange) => {
+    setCustomDateRange(newDateRange);
+    // Now you can use customDateRange in main.js, e.g., send it to an API
+  };
 
   // Fetch data from the backend for stock predictions
   const fetchData = useCallback(async (ticker) => {
@@ -41,7 +47,7 @@ const Main = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ticker }),
+        body: JSON.stringify({ ticker, dateRange: customDateRange }),
       });
 
       if (!response.ok) {
@@ -54,10 +60,10 @@ const Main = () => {
       const closingPriceGraph = result.closing_price;
       const meanAvgPrice75 = result.mean_avg_75;
       const meanAvgPrice50 = result.mean_avg_50;
-      const original1Year = result.original_last1;
+      const original8Year = result.original_last8;
       const combined_predictions = result.combined_predictions;
-      const dates = result.dates; // Daily dates
       const monthlyLabels = result.monthly_labels; // Monthly labels
+      const combined_dates = result.combined_dates;
 
       // Formatting data for prediction vs original graph
       const formattedData = priceArray.map((price, index) => ({
@@ -69,7 +75,7 @@ const Main = () => {
       const futurePredictionData = combined_predictions.map((price, index) => ({
         day: index + 1,
         combined_predictions: price,
-        original_1year: original1Year[index]
+        original_8year: original8Year[index]
       }));
 
       // Formatting data for closing price vs time graph
@@ -90,12 +96,14 @@ const Main = () => {
         predictionData: formattedData,
         closingPriceData: closingPriceData,
         closingvsmean: closingvsmean,
-        futurePredictionData: futurePredictionData, // Contains both month and date
+        futurePredictionData: futurePredictionData,
+        combined_dates: combined_dates
       });
 
 
       // Set additional data for last closing price, 1-year predictions, etc.
-      setLastClosingPrice(original1Year);
+      setcombinedDates(combined_dates);
+      setLastClosingPrice(original8Year);
       setDates(dates);
       setMonthlyLabels(monthlyLabels);
     } catch (error) {
@@ -106,7 +114,7 @@ const Main = () => {
     }
   }, []);
 
-  // Fetch the company info from the backend
+  // Fetch the company info from the backendd
   const fetchCompanyInfo = useCallback(async (ticker) => {
     try {
       const response = await fetch('http://127.0.0.1:5000/company_info', {
@@ -170,7 +178,7 @@ const Main = () => {
           <CompanyDesc companyDescription={companyDescription} loading={loading} />
           <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
           {/* Render StockPredictionChart here */}
-          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} dates={dates} monthlyLabels={monthlyLabels} />
+          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} dates={dates} monthlyLabels={monthlyLabels} onDateRangeChange={handleDateRangeChange} xlabel={combinedDates} />
           <AboutModel />
         </div>
       </div>

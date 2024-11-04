@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
-const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName, dates, monthlyLabels }) => {
-  const [selectedGraph, setSelectedGraph] = useState('Closing Price vs Time');
+const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName, dates, monthlyLabels, onDateRangeChange, xlabel }) => {
+  const [selectedGraph, setSelectedGraph] = useState('Original vs Prediction');
   const [isGraphCollapsed, setIsGraphCollapsed] = useState(true);
+  const [dateRange, setDateRange] = useState('1M'); // Default range
+  const [customDate, setCustomDate] = useState({ start: '', end: '' });
 
   const { predictionData = [], closingPriceData = [], closingvsmean = [], futurePredictionData = [] } = data;
 
@@ -16,6 +18,20 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
     }
   }, [data]);
 
+  const getFilteredData = (graphData) => {
+    if (dateRange === 'custom' && customDate.start && customDate.end) {
+      return graphData.filter(item => item.date >= customDate.start && item.date <= customDate.end);
+    }
+    return graphData; // Default: all data
+  };
+
+  // Update parent with custom date range when it changes
+  useEffect(() => {
+    if (dateRange === 'custom' && customDate.start && customDate.end) {
+      onDateRangeChange(customDate);
+    }
+  }, [customDate, dateRange, onDateRangeChange]);
+
   // Determine the data and tooltip labels based on the selected graph
   const getGraphData = () => {
     switch (selectedGraph) {
@@ -26,11 +42,12 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
       case 'Training vs Testing':
         return { data: predictionData, dataKey: 'predictedPrice', yAxisLabel: `Price (${currency})` };
       case 'Original vs Prediction':
-        return { data: futurePredictionData, dataKey: 'original_1year', yAxisLabel: `Price (${currency})` };
+        return { data: futurePredictionData, dataKey: 'original_8year', yAxisLabel: `Price (${currency})` };
       default:
         return { data: [], dataKey: '', yAxisLabel: '' };
     }
   };
+
 
   const { data: graphData, yAxisLabel } = getGraphData();
 
@@ -41,13 +58,29 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
         <select
           value={selectedGraph}
           onChange={(e) => setSelectedGraph(e.target.value)}
-          className="bg-[#101830] text-[#e6e7ec] rounded p-2"
-        >
+          className="bg-[#101830] text-[#e6e7ec] rounded p-2">
+          <option value="Original vs Prediction">Original vs Prediction</option>
           <option value="Closing Price vs Time">Closing Price vs Time</option>
           <option value="Mean Value Analysis">Mean Value Analysis</option>
-          <option value="Original vs Prediction">Original vs Prediction</option>
           <option value="Training vs Testing">Training vs Testing</option>
         </select>
+      </div>
+      <div className="my-4 space-x-4">
+        <input
+          type="date"
+          value={customDate.start}
+          onChange={(e) => setCustomDate({ ...customDate, start: e.target.value })}
+          className="bg-gray-700 text-white p-2 rounded"
+        />
+        <input
+          type="date"
+          value={customDate.end}
+          onChange={(e) => {
+            setCustomDate({ ...customDate, end: e.target.value });
+            setDateRange('custom'); // Set to custom when using custom date range
+          }}
+          className="bg-gray-700 text-white p-2 rounded"
+        />
       </div>
       <div className="rounded-lg mt-4 border border-[#EDEDED] border-opacity-30 mr-2 pb-1">
         <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsGraphCollapsed(!isGraphCollapsed)}>
@@ -98,14 +131,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                 )}
                 <YAxis label={{ value: yAxisLabel, angle: -90, position: 'insideLeft' }} />
                 <Tooltip
-                  formatter={(value, name) => {
-                    if (selectedGraph === 'Training vs Testing ' || selectedGraph === 'Original vs Prediction') {
-                      return name === 'original'
-                        ? [`${parseFloat(value).toFixed(2)} ${currency}`, 'Original Price']
-                        : [`${parseFloat(value).toFixed(2)} ${currency}`, 'Predicted Price'];
-                    }
-                    return [`${parseFloat(value).toFixed(2)} ${currency}`, name];
-                  }}
+                  formatter={(value, name) => [`${parseFloat(value).toFixed(2)} ${currency}`, name]}
                   labelFormatter={() => ``}
                 />
                 <Legend verticalAlign="top" align="right" />
@@ -129,7 +155,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
                 )}
                 {selectedGraph === 'Original vs Prediction' && (
                   <>
-                    <Line type="monotone" dataKey="original_1year" name="Original Price" stroke="#82ca9d" dot={false} />
+                    <Line type="monotone" dataKey="original_8year" name="Original Price" stroke="#82ca9d" dot={false} />
                     <Line type="monotone" dataKey="combined_predictions" name="Predicted Price" stroke="#ff7300" dot={false} />
                   </>
                 )}

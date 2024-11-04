@@ -54,11 +54,11 @@ const CompanyInfo = ({ currency, openingPrice, closingPrice, maxOpen, maxClose, 
 
         {/* High Price with hover animation */}
         <div
-          className='h-[100px] rounded-[8px] bg-[#06061d] flex items-center justify-center'
+          className='h-[100px] rounded-[8px] bg-[#06061d] flex items-center justify-center px-[30px] relative overflow-hidden'
           onMouseEnter={() => setShowMaxEmployees(true)}
           onMouseLeave={() => setShowMaxEmployees(false)}
         >
-          <div className='text-center'>
+          <div className='relative w-full text-center'>
             <h2 className='text-[#e6e7ec] text-[15px] leading-[17px] font-bold'>
               {showMaxEmployees ? '52 - Week High (Max)' : '52 - Week High (Mean)'}
             </h2>
@@ -75,11 +75,11 @@ const CompanyInfo = ({ currency, openingPrice, closingPrice, maxOpen, maxClose, 
 
         {/* Low Price with hover animation */}
         <div
-          className='h-[100px] rounded-[8px] bg-[#06061d] flex items-center justify-center'
+          className='h-[100px] rounded-[8px] bg-[#06061d] flex items-center justify-center px-[30px] relative overflow-hidden'
           onMouseEnter={() => setShowMaxMarketCap(true)}
           onMouseLeave={() => setShowMaxMarketCap(false)}
         >
-          <div className='text-center'>
+          <div className='relative w-full text-center'>
             <h2 className='text-[#e6e7ec] text-[15px] leading-[17px] font-bold'>
               {showMaxMarketCap ? '52 - Week Low (Max)' : '52 - Week Low (Mean)'}
             </h2>
