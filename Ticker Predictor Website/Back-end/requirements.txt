@@ -1,0 +1,10 @@
+Flask
+yfinance
+Flask-Cors
+tensorflow
+keras
+pandas
+numpy
+scikit-learn
+waitress
+matplotlib

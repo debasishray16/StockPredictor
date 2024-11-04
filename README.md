@@ -90,6 +90,23 @@ docker run debasishray/streamlit-app:v1.0
 docker stop debasishray/streamlit-app:v1.0
 ```
 
+## Docker Compose
+
+Two ways to run Docker Compose:
+
+- To run docker compose in folder location.
+
+```bash
+git clone https://github.com/debasishray16/StockPredictor.git
+
+docker pull debasishray/predictor-backend:v1.0
+docker pull debasishray/predictor-frontend:v1.0
+
+# In detached mode
+docker-compose up -d
+```
+
+
 ### Contributors
 
 <div align="right">
