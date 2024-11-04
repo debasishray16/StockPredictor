@@ -10,14 +10,6 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
         setCompanyCode(event.target.value);
     };
 
-    const [selectedOption, setSelectedOption] = useState('');
-
-    const handleChange = (event) => {
-        const selectedValue = event.target.value;
-        setSelectedOption(selectedValue);
-        onSelectOption(selectedValue);  // Send the selected option back to Main for fetching data
-    };
-
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission
         setLoading(true); // Start loading
@@ -36,12 +28,12 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
 
     return (
         <div className='flex items-center justify-between h-[70px] shadow-lg border-black px-[25px] bg-[#09071d] flex-shrink-0'>
-            <form onSubmit={handleSubmit} className='flex items-center rounded-[5px]'>
+            <form onSubmit={handleSubmit} className='flex items-center rounded-[5px] '>
                 <input
                     type='text'
                     value={companyCode}
                     onChange={handleInputChange}
-                    className='bg-[#101830] h-[40px] outline-[3px] pl-[13px] w-[350px] rounded-[5px] placeholder:text-[14px] placeholder:text-[#c7cad8] text-white leading-[20px] font-normal'
+                    className='bg-[#101830] h-[40px] outline-[3px] pl-[13px] w-[600px] rounded-[5px] placeholder:text-[14px] placeholder:text-[#c7cad8] text-white leading-[20px] font-normal'
                     placeholder='Enter Company Ticker (e.g., AAPL)'
                     required
                 />
@@ -54,27 +46,6 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                 </button>
                 <p className='ml-2 text-white'>{updatedMessage}</p>
             </form>
-            {/*
-            <div className='py-4 cursor-pointer'>
-                <label htmlFor="dropdown" className='text-[15px] leading-[20px] py-[20px] pr-[20px] font-bold #1e1e2d text-[#c7cad8]'> Or Select an option:</label>
-                <select
-                    id="dropdown"
-                    value={selectedOption}
-                    onChange={handleChange}
-                    className="rounded p-2 bg-[#101830] text-[#c7cad8]">
-                    <option value="">Choose an option</option>
-                    <option value="JPM">J.P. Morgan</option>
-                    <option value="AAPL">Apple</option>
-                    <option value="GOOG">Google</option>
-                    <option value="AMZN">Amazon</option>
-                    <option value="ARCC">Ares Capital Corporation</option>
-                    <option value="MMM">3M Company</option>
-                    <option value="MGK">MGK</option>
-                    <option value="IEP">Icahn Enterprises L.P.</option>
-                    <option value="AAP">Advance Auto Parts, Inc.</option>
-                </select>
-            </div>
-            */}
         </div>
     );
 };

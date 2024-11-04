@@ -42,7 +42,7 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
         style={{ width: `${width}px`, transition: isResizing ? 'none' : 'width 0.2s', height: '100vh' }} // 100vh for full screen height
       >
         <div className='px-[5px] py-[30px] flex items-center justify-center border-b border-[#EDEDED] border-opacity-30'>
-          <h1 className='text-[#c7cad8] text-[25px] leading-[24px] font-extrabold cursor-pointer'> Ticker Predictor </h1>
+          <h1 className='text-[#c7cad8] text-[25px] leading-[24px] font-extrabold'> Ticker Predictor </h1>
         </div>
         {/* Display the company details */}
         <div className='pb-4 text-[#c7cad8] leading-7 bg-[#06061d] pl-5 mt-7 rounded-lg'>
