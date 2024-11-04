@@ -118,7 +118,7 @@ def predict():
     scaler = MinMaxScaler(feature_range=(0, 1))
 
     # Load Model
-    model = tf.keras.models.load_model('../model/8_15_23_300_LXg.h5', compile=False)
+    model = tf.keras.models.load_model('./model/8_15_23_300_LXg.h5', compile=False)
 
     # Testing part
     past_100_days = data_training.tail(100)

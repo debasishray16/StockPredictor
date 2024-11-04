@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 
-const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName, dates, monthlyLabels, onDateRangeChange, xlabel }) => {
+const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName }) => {
   const [selectedGraph, setSelectedGraph] = useState('Original vs Prediction');
   const [isGraphCollapsed, setIsGraphCollapsed] = useState(true);
-  const [dateRange, setDateRange] = useState('1M'); // Default range
-  const [customDate, setCustomDate] = useState({ start: '', end: '' });
 
   const { predictionData = [], closingPriceData = [], closingvsmean = [], futurePredictionData = [] } = data;
 
@@ -18,19 +16,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
     }
   }, [data]);
 
-  const getFilteredData = (graphData) => {
-    if (dateRange === 'custom' && customDate.start && customDate.end) {
-      return graphData.filter(item => item.date >= customDate.start && item.date <= customDate.end);
-    }
-    return graphData; // Default: all data
-  };
 
-  // Update parent with custom date range when it changes
-  useEffect(() => {
-    if (dateRange === 'custom' && customDate.start && customDate.end) {
-      onDateRangeChange(customDate);
-    }
-  }, [customDate, dateRange, onDateRangeChange]);
 
   // Determine the data and tooltip labels based on the selected graph
   const getGraphData = () => {
@@ -62,25 +48,8 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
           <option value="Original vs Prediction">Original vs Prediction</option>
           <option value="Closing Price vs Time">Closing Price vs Time</option>
           <option value="Mean Value Analysis">Mean Value Analysis</option>
-          <option value="Training vs Testing">Training vs Testing</option>
+          <option value="Training vs Testing">Training vs Testing (2015 - 2023)</option>
         </select>
-      </div>
-      <div className="my-4 space-x-4">
-        <input
-          type="date"
-          value={customDate.start}
-          onChange={(e) => setCustomDate({ ...customDate, start: e.target.value })}
-          className="bg-gray-700 text-white p-2 rounded"
-        />
-        <input
-          type="date"
-          value={customDate.end}
-          onChange={(e) => {
-            setCustomDate({ ...customDate, end: e.target.value });
-            setDateRange('custom'); // Set to custom when using custom date range
-          }}
-          className="bg-gray-700 text-white p-2 rounded"
-        />
       </div>
       <div className="rounded-lg mt-4 border border-[#EDEDED] border-opacity-30 mr-2 pb-1">
         <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsGraphCollapsed(!isGraphCollapsed)}>
