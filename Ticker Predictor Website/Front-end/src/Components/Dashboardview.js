@@ -33,10 +33,11 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                     type='text'
                     value={companyCode}
                     onChange={handleInputChange}
-                    className='bg-[#101830] h-[40px] outline-[3px] pl-[13px] w-[600px] rounded-[5px] placeholder:text-[14px] placeholder:text-[#c7cad8] text-white leading-[20px] font-normal'
+                    className='bg-[#101830] h-[40px] outline-none focus:outline-none pl-[13px] w-[600px] rounded-l-lg placeholder:text-[14px] placeholder:text-[#c7cad8] text-white leading-[20px] font-normal'
                     placeholder='Enter Company Ticker (e.g., AAPL)'
                     required
                 />
+
                 <button
                     type='submit'
                     disabled={loading} // Disable button while loading
