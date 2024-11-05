@@ -5,7 +5,7 @@
 - Our project works on concepts of deep learning to predict values based on time-series model. It includes use of LSTM (Long Short Term Memory) with XG-Boost to enhance the performance of prediction.
 
 - This repository invloves deployment of model with **two-interfaces**.
-One with <kbd>Streamlit-App</kbd>  [**[Link](https://ticker-prediction-app-tpa.streamlit.app/)**] and <kbd> React App </kbd>
+One with <kbd> Streamlit-App </kbd>  [**[Link](https://ticker-prediction-app-tpa.streamlit.app/)**] and <kbd> React App </kbd>
 
 ## Install and Run the project
 
@@ -29,7 +29,7 @@ npm install
 npm run start
 ```
 
-- Simultaneously, Run a **command in another terminal** to start <kbd>waitress_server.py</kbd> file in <kbd>/backend/waitress_server.py</kbd> folder.
+- Simultaneously, Run a **command in another terminal** to start <kbd> waitress_server.py </kbd> file in <kbd>/backend/waitress_server.py</kbd> folder.
 
 ```bash
 python waitress_server.py
@@ -102,10 +102,9 @@ git clone https://github.com/debasishray16/StockPredictor.git
 docker pull debasishray/predictor-backend:v1.0
 docker pull debasishray/predictor-frontend:v1.0
 
-# In detached mode
-docker-compose up -d
+docker run -p 5000:5000 debasishray/predictor-backend:v1.0
+docker run -p 3000:3000 debasishray/predictor-frontend:v1.0
 ```
-
 
 ### Contributors
 
