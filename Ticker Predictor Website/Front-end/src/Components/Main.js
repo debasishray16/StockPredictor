@@ -5,10 +5,12 @@ import CompanyDesc from './companyDesc';
 import StockPredictionChart from './StockPredictionChart';
 import CompanyInfo from './companyInfo';
 import AboutModel from './aboutModel';
+import idle from '../assets/idle.gif';
 
 const Main = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [companyDescription, setCompanyDescription] = useState('');
   const [sector, setSector] = useState('');
@@ -27,14 +29,8 @@ const Main = () => {
   const [avg_high_price, setavg_high_price] = useState('');
   const [avg_low_price, setavg_low_price] = useState('');
   const [lastClosingPrice, setLastClosingPrice] = useState('');
-  const [dates, setDates] = useState([]);
-  const [monthlyLabels, setMonthlyLabels] = useState([]);
-  const [customDateRange, setCustomDateRange] = useState({ start: '', end: '' });
   const [combinedDates, setcombinedDates] = useState([]);
-  const handleDateRangeChange = (newDateRange) => {
-    setCustomDateRange(newDateRange);
-    // Now you can use customDateRange in main.js, e.g., send it to an API
-  };
+
 
   // Fetch data from the backend for stock predictions
   const fetchData = useCallback(async (ticker) => {
@@ -47,7 +43,7 @@ const Main = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ticker, dateRange: customDateRange }),
+        body: JSON.stringify({ ticker }),
       });
 
       if (!response.ok) {
@@ -62,7 +58,6 @@ const Main = () => {
       const meanAvgPrice50 = result.mean_avg_50;
       const original8Year = result.original_last8;
       const combined_predictions = result.combined_predictions;
-      const monthlyLabels = result.monthly_labels; // Monthly labels
       const combined_dates = result.combined_dates;
 
       // Formatting data for prediction vs original graph
@@ -102,10 +97,9 @@ const Main = () => {
 
 
       // Set additional data for last closing price, 1-year predictions, etc.
+      setShowAnimation(false);
       setcombinedDates(combined_dates);
       setLastClosingPrice(original8Year);
-      setDates(dates);
-      setMonthlyLabels(monthlyLabels);
     } catch (error) {
       console.error('Error fetching data:', error);
       setErrorMessage('No Data to Display.');
@@ -158,8 +152,9 @@ const Main = () => {
   };
 
   return (
-    <div className="h-screen flex bg-gradient-to-r from-[#14142d] to-[#0b082a] overflow-hidden">
+    <div className="h-screen flex bg-[#0b082a] overflow-hidden">
       <Sidebar
+        loading={loading}
         sector={sector}
         industry={industry}
         fullTimeEmployees={fullTimeEmployees}
@@ -171,15 +166,27 @@ const Main = () => {
       <div className="flex-grow flex flex-col overflow-auto">
         <Dashboardview onFetchData={handleFetchData} className='pt-0 px-0 top-0 ' onSelectOption={handleFetchData} />
         <div className="flex-grow flex flex-col overflow-auto pl-4 pr-4">
-          <div className='top-0 bg-gradient-to-r from-[#14142d] to-[#0b082a] p-4 pr-5'>
+          <div className='top-0 bg-[#0b082a] p-4 pr-5'>
             <h1 className='text-[#e6e7ec] text-[35px] leading-[34px] font-semibold'>Dashboard</h1>
           </div>
-          {/* Display long business summary here */}
-          <CompanyDesc companyDescription={companyDescription} loading={loading} />
-          <CompanyInfo currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
-          {/* Render StockPredictionChart here */}
-          <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} dates={dates} monthlyLabels={monthlyLabels} onDateRangeChange={handleDateRangeChange} xlabel={combinedDates} />
-          <AboutModel />
+
+          {showAnimation ? ( // Conditional rendering for the Idle component
+            <>
+              <CompanyDesc companyDescription={companyDescription} loading={loading} />
+              <h1 className='text-[#e6e7ec] text-[30px] leading-[34px] font-semibold p-4 pt-[100px] flex justify-center items-center'>No Ticker Selected</h1>
+              <div className="flex justify-center items-center h-screen">
+                <img src={idle} alt="Animated GIF" className="pl-[150px] h-64 object-cover flex " />
+              </div>
+              <AboutModel />
+            </>
+          ) : (
+            <>
+              <CompanyDesc companyDescription={companyDescription} loading={loading} showAnimation={showAnimation} />
+              <CompanyInfo loading={loading} currency={currency} openingPrice={openingPrice} closingPrice={closingPrice} maxOpen={maxopeningPrice} maxClose={maxclosingPrice} max_high_price={max_high_price} max_low_price={max_low_price} avg_high_price={avg_high_price} avg_low_price={avg_low_price} />
+              <StockPredictionChart data={data} loading={loading} errorMessage={errorMessage} currency={currency} companyName={companyName} lastClosingPrice={lastClosingPrice} xlabel={combinedDates} />
+              <AboutModel />
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 import throttle from 'lodash/throttle';
+import loading1 from '../assets/loading.gif';
 
-const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, companySite, currency }) => {
+const Sidebar = ({ loading, sector, industry, fullTimeEmployees, marketCap, companyName, companySite, currency }) => {
   const [width, setWidth] = useState(360);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -38,7 +39,6 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
       document.addEventListener('mouseup', handleMouseUp);
     }
 
-    // Clean up event listeners on unmount or when resizing ends
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
@@ -55,19 +55,27 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
           <h1 className="text-[#c7cad8] text-[25px] leading-[24px] font-extrabold"> Ticker Predictor </h1>
         </div>
 
-        <div className="flex justify-between items-center cursor-pointer text-[#c7cad8] leading-7 bg-[#06061d] pl-5 mt-7 rounded-lg" onClick={toggleCollapse}>
+        <div className="flex justify-between items-center cursor-pointer text-[#c7cad8] leading-7 bg-[#06061d] pl-5 mt-7 rounded-t-lg" onClick={toggleCollapse}>
           <h1 className="font-bold py-[16px] text-[16px] "> Company Details </h1>
           <span className="px-7 text-[#e6e7ec]">
             {isCollapsed ? <IoChevronDown size={20} /> : <IoChevronUp size={20} />}
           </span>
         </div>
 
-        <div className={`text-[#c7cad8] leading-7 bg-[#06061d] pl-5 mb-5 transition-all duration-500 ease-in-out ${isCollapsed ? 'overflow-hidden max-h-0' : 'max-h-screen overflow-y-auto pb-3 rounded-lg'}`}>
-          <p><strong> Company - </strong> {companyName || '--'}</p>
-          <p><strong> Sector - </strong> {sector || '--'}</p>
-          <p><strong> Industry - </strong> {industry || '--'}</p>
-          <p><strong> Full-Time Employees - </strong> {Intl.NumberFormat('en-US').format(fullTimeEmployees || '--')}</p>
-          <p><strong> Market Cap - </strong> {Intl.NumberFormat('en-US').format(marketCap || '--')} {currency}</p>
+        <div className={`text-[#c7cad8] leading-7 bg-[#06061d] pl-5 mb-5 transition-all duration-500 ease-in-out ${isCollapsed ? 'overflow-hidden max-h-0 rounded-b-lg' : 'max-h-screen overflow-y-auto pb-3 rounded-b-lg'}`}>
+          {loading ? (  // Add loading condition
+            <div className="flex items-center justify-center py-4">
+              <img src={loading1} alt="Loading Animation" className=" object-cover" />
+            </div>
+          ) : (
+            <>
+              <p><strong> Company - </strong> {companyName || '--'}</p>
+              <p><strong> Sector - </strong> {sector || '--'}</p>
+              <p><strong> Industry - </strong> {industry || '--'}</p>
+              <p><strong> Full-Time Employees - </strong> {Intl.NumberFormat('en-US').format(fullTimeEmployees || '--')}</p>
+              <p><strong> Market Cap - </strong> {Intl.NumberFormat('en-US').format(marketCap || '--')} {currency}</p>
+            </>
+          )}
         </div>
 
         <button
