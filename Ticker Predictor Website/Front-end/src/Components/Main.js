@@ -108,7 +108,7 @@ const Main = () => {
       setMonthlyLabels(monthlyLabels);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setErrorMessage('Error fetching data. Please try again.');
+      setErrorMessage('No Data to Display.');
     } finally {
       setLoading(false);
     }

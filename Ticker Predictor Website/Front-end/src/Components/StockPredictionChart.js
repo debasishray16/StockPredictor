@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import Spinner from './Spinner';
 
 const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName }) => {
   const [selectedGraph, setSelectedGraph] = useState('Original vs Prediction');
@@ -60,9 +61,9 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
         </div>
         <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isGraphCollapsed ? 'max-h-0 pb-0' : 'max-h-screen pb-3'}`}>
           {loading ? (
-            <p className="text-[#e6e7ec] text-[15px] leading-[34px] animate-pulse font-normal px-7 flex items-center justify-center">Loading data...</p>
+            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 flex items-center justify-center"><Spinner /></p>
           ) : errorMessage ? (
-            <p className="text-red-500" aria-live="polite">{errorMessage}</p>
+            <p className="text-red-500 p-2" aria-live="polite">{errorMessage}</p>
           ) : graphData.length > 0 ? (
             <ResponsiveContainer width="95%" height={500}>
               <LineChart data={graphData}>

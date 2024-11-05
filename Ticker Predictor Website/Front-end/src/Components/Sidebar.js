@@ -76,7 +76,9 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
           rel="noopener noreferrer"
           className="mb-5 p-3 ml-6 mt-5 rounded-lg text-[#c7cad8] border-b border-[#EDEDED] border-opacity-70 w-5/6 transition ease-in-out bg-[#06061d] delay-150 hover:-translate-y-1 hover:scale-105 hover:bg-indigo-500 duration-400 text-center"
         >
-          <strong>Company Website</strong>
+          <a href={companySite} target="_blank" rel="noopener noreferrer ">
+            <strong>Company Website</strong>
+          </a>
         </button>
 
         <div className="flex-col items-center gap-[15px] py-4">
@@ -84,13 +86,13 @@ const Sidebar = ({ sector, industry, fullTimeEmployees, marketCap, companyName, 
           <div className="grid grid-cols-2 bg-[#06061d] rounded-lg mb-4">
             <p className="text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8]">Debasish Ray</p>
             <a className="text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8] text-right hover:underline" href="https://github.com/debasishray16" target="_blank" rel="noopener noreferrer">
-              <i className="bi bi-github"> Github </i>
+              <i className="bi bi-github"> GitHub </i>
             </a>
           </div>
           <div className="grid grid-cols-2 bg-[#06061d] rounded-lg">
             <p className="text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8]">Utkarsh Raj Sinha</p>
             <a className="text-[15px] py-3 px-3 pr-[20px] font-bold text-[#c7cad8] text-right hover:underline" href="https://github.com/gamecoder08" target="_blank" rel="noopener noreferrer">
-              <i className="bi bi-github"> Github </i>
+              <i className="bi bi-github"> GitHub </i>
             </a>
           </div>
         </div>
