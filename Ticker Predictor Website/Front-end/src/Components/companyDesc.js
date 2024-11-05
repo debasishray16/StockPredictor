@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import loading1 from '../assets/loading.gif';
 
 const CompanyDesc = ({ companyDescription, loading }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -9,12 +10,19 @@ const CompanyDesc = ({ companyDescription, loading }) => {
     setIsCollapsed(!isCollapsed);
   };
 
-  // Automatically expand when companyDescription is received
+  // Expand when companyDescription or loading is active
   useEffect(() => {
-    if (companyDescription) {
+    if (companyDescription || loading) {
       setIsCollapsed(false);
     }
-  }, [companyDescription]);
+  }, [companyDescription, loading]);
+
+  // Auto-collapse when loading completes
+  useEffect(() => {
+    if (loading) {
+      setIsCollapsed(true);
+    }
+  }, [loading]);
 
   return (
     <div className='mt-4 mb-4 pb-1 pl-4 bg-[#06061d] rounded-lg'>
@@ -22,17 +30,21 @@ const CompanyDesc = ({ companyDescription, loading }) => {
         <h1 className='text-[#e6e7ec] leading-[34px] font-bold px-7 p-1'>
           About Company
         </h1>
-        {/* Arrow icon */}
         <span className="px-7 p-4 text-[#e6e7ec]">
           {isCollapsed ? <IoChevronDown size={20} /> : <IoChevronUp size={20} />}
         </span>
       </div>
 
-      {/* Collapsible content with animation */}
       <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-screen'}`}>
-        <p className='text-[#e6e7ec] px-7 p-4' style={{ textAlign: 'justify' }}>
-          {companyDescription}
-        </p>
+        <div className={`flex justify-center items-center transition-opacity duration-300 ease-in-out ${loading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <img src={loading1} alt="Loading Animation" className="object-cover" />
+        </div>
+
+        <div className={`transition-opacity duration-300 ease-in-out ${loading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <p className='text-[#e6e7ec] px-7 p-4' style={{ textAlign: 'justify' }}>
+            {companyDescription}
+          </p>
+        </div>
       </div>
     </div>
   );
