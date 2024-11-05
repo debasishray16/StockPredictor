@@ -4,7 +4,11 @@ services:
     ports:
       - "5000:5000"
     image: debasishray/predictor-backend:v1.0
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 83ee1dfff71284527d0be2ed96183a2145736ba3
   
   # depends_on must be placed at last beacuse it depends upon backend.
   front-end:
