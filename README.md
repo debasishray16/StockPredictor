@@ -125,7 +125,7 @@ docker push ghcr.io/debasishray16/stockpredictor/webapp:latest
 
 ### Contributors
 
-<div align="right">
+<div align="center">
  <a href="https://github.com/debasishray16/StockPredictor/graphs/contributors">
    <img src="https://contrib.rocks/image?repo=debasishray16/StockPredictor" />
  </a>
