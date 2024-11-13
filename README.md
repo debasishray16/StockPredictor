@@ -14,7 +14,7 @@ About this project titled "Stock Ticker Analysis and Prediction System using Sta
 - Our project works on concepts of deep learning to predict values based on time-series model. It includes use of LSTM (Long Short Term Memory) with XG-Boost to enhance the performance of prediction. Also, it takes tickers as input and gives prediction results.
 
 - This repository invloves deployment of model with **two-interfaces**.
-One with <kbd>Streamlit-App</kbd>  [**[Link](https://ticker-prediction-app-tpa.streamlit.app/)**] and <kbd> React App </kbd>
+One with <kbd> Streamlit-App </kbd>  [**[Link](https://ticker-prediction-app-tpa.streamlit.app/)**] and <kbd> React App </kbd>
 
 - For versioning of project deployement,We have created docker images for respective project to track and observe major changes made in the application.
 Each of these images are tagged with different versions which can be easily pulled into your system.
@@ -125,7 +125,7 @@ docker push ghcr.io/debasishray16/stockpredictor/webapp:latest
 
 ### Contributors
 
-<div align="right">
+<div align="center">
  <a href="https://github.com/debasishray16/StockPredictor/graphs/contributors">
    <img src="https://contrib.rocks/image?repo=debasishray16/StockPredictor" />
  </a>
