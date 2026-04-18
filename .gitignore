@@ -1,2 +1,5 @@
-.vscode
+
 node_modules\.package-lock.json
+.vscode\settings.json
+.vscode\launch.json
+__pycache__/
