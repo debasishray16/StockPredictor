@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  overflow-x: hidden;
 }
 
 
@@ -14,11 +14,96 @@
   
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.bg-gradient-to-b {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.shadow-lg {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+}
+
+.stock-svg {
+  width: 280px;
+  height: 140px;
+  overflow: visible;
+}
+
+/* Sharp Zig Zag Line */
+.stock-line-zigzag {
+  fill: none;
+  stroke: #60a5fa; /* Brighter Blue for the 'jump' */
+  stroke-width: 4;
+  stroke-linejoin: miter; /* Makes corners sharp */
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: jumpDraw 2s linear infinite;
+}
+
+/* Block Animations */
+.chart-block {
+  transition: opacity 0.3s;
+}
+
+.block-1 { animation: blockPulse 2s infinite 0.2s; }
+.block-2 { animation: blockPulse 2s infinite 0.6s; }
+.block-3 { animation: blockPulse 2s infinite 1.0s; }
+
+@keyframes jumpDraw {
+  0% { stroke-dashoffset: 600; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -600; }
+}
+
+@keyframes blockPulse {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.4; }
+}
+
+.loading-text {
+  margin-top: 25px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #94a3b8; 
+  text-transform: uppercase;
+  animation: textFade 1.5s ease-in-out infinite;
+}
+
+@keyframes textFade {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for Firefox */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */

@@ -87,9 +87,18 @@ async def company_info():
         marketCap = info.get("marketCap", "No market cap available.")
         currency = info.get("currency", "N/A")
         
+        logo_url = None
+
+        if website:
+            domain = website.replace("https://", "").replace("http://", "").split("/")[0]
+            domain = domain.replace("www.", "")
+            
+            logo_url = f"https://www.google.com/s2/favicons?sz=256&domain={domain}"
+        
         # Extract only the longBusinessSummary
         company_summary = {
             "company_name": company_name,
+            "logo_url": logo_url,
             "longBusinessSummary": longBusinessSummary,
             "sector": sector,
             "industry": industry,

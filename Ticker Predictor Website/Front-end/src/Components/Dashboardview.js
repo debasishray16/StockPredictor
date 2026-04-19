@@ -27,13 +27,13 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
     };
 
     return (
-        <div className='flex items-center justify-between h-[70px] shadow-lg border-black px-[25px] bg-[#09071d] flex-shrink-0'>
+        <div className='flex items-center bg-[#1c2023] justify-between h-[70px] shadow-xl shadow-black px-[25px] flex-shrink-0'>
             <form onSubmit={handleSubmit} className='flex items-center rounded-[5px] '>
                 <input
                     type='text'
                     value={companyCode}
                     onChange={handleInputChange}
-                    className='bg-[#101830] h-[40px] outline-none focus:outline-none pl-[13px] w-[600px] rounded-l-lg placeholder:text-[14px] placeholder:text-[#c7cad8] text-white leading-[20px] font-normal'
+                    className='h-[40px] outline-none border border-[#ccc] border-r-0 focus:outline-none pl-[13px] w-[600px] rounded-l-lg placeholder:text-[14px] placeholder:text-[#000] leading-[20px] font-normal'
                     placeholder='Enter Company Ticker (e.g., AAPL)'
                     required
                 />
@@ -41,11 +41,11 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
                 <button
                     type='submit'
                     disabled={loading} // Disable button while loading
-                    className={`bg-[#101830] h-[40px] px-[14px] flex items-center justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`h-[40px] px-[14px] flex items-center border border-[#ccc] justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    <FaSearch color='#c7cad8' />
+                    <FaSearch color='#e6e7ec' />
                 </button>
-                <p className='ml-2 text-white'>{updatedMessage}</p>
+                <p className='ml-2 text-[#e6e7ec]'>{updatedMessage}</p>
             </form>
         </div>
     );

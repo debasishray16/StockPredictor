@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="flex basis-[100%] h-[100%] overflow-scroll">
+    <div className="w-full h-full overflow-x-hidden">
       <Outlet />
     </div>
   );
