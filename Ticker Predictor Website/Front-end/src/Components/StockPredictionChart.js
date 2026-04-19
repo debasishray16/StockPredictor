@@ -39,13 +39,13 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
   const { data: graphData, yAxisLabel } = getGraphData();
 
   return (
-    <div className="mt-4 mb-4 p-2 pl-4 bg-[#06061d] rounded-lg">
+    <div className="mt-4 mb-4 p-2 pl-4 bg-[#1c2023] rounded-lg">
       <div className="text-[#e6e7ec] leading-[34px] font-bold px-7 grid grid-cols-2 gap-[55%] mt-[25px] pb-3">
         <p className='w-[500px]'>{companyName} Graph Analysis</p>
         <select
           value={selectedGraph}
           onChange={(e) => setSelectedGraph(e.target.value)}
-          className="bg-[#101830] text-[#e6e7ec] rounded p-2">
+          className="bg-[#1c2023] border border-[#EDEDED] text-[#e6e7ec] rounded p-2">
           <option value="Original vs Prediction">Original vs Prediction</option>
           <option value="Closing Price vs Time">Closing Price vs Time</option>
           <option value="Mean Value Analysis">Mean Value Analysis</option>
