@@ -1,6 +1,6 @@
 import React from "react";
 
-const LoadingAnim = () => {
+const LoadingAnim = ({ loading }) => {
     return (
         <div className="loader-container">
             <svg
@@ -30,7 +30,9 @@ const LoadingAnim = () => {
                     filter="url(#glow)"
                 />
             </svg>
-            <p className="loading-text">Fetching market data...</p>
+            {loading && (
+                <p className="loading-text">Fetching market data...</p>
+            )}
         </div>
     );
 };

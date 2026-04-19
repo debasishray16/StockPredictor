@@ -1,38 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 import loading1 from '../assets/loading.gif';
 
 const CompanyDesc = ({ companyDescription, loading, logoimg }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  // Function to toggle collapse state
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  // Expand when companyDescription or loading is active
-  useEffect(() => {
-    if (companyDescription || loading) {
-      setIsCollapsed(false);
-    }
-  }, [companyDescription, loading]);
-
-  // Auto-collapse when loading completes
-  useEffect(() => {
-    if (loading) {
-      setIsCollapsed(true);
-    }
-  }, [loading]);
 
   return (
     <div className='mt-4 mb-4 pb-1 pl-4 bg-gradient-to-r from-white/5 via-white/20 to-white/5 backdrop-blur-lg shadow-lg rounded-xl'>
-      <div className="flex justify-between items-center cursor-pointer relative z-20" onClick={toggleCollapse}>
-        <h1 className='text-[#e6e7ec] leading-[34px] font-bold px-7 p-1'>
+      <div className="flex justify-between items-center relative z-20">
+        <h1 className='text-[#e6e7ec] text-[19px] leading-[34px] pt-[17px] font-bold px-7 p-1'>
           About Company
         </h1>
-        <span className="px-7 p-4 text-[#e6e7ec]">
-          {isCollapsed ? <IoChevronDown size={20} /> : <IoChevronUp size={20} />}
-        </span>
       </div>
 
       <div className={`transition-all duration-500 ease-in-out overflow-hidden`}>

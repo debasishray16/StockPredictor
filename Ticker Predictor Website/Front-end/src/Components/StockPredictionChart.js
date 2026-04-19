@@ -41,7 +41,7 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
   return (
     <div className="mt-4 mb-4 p-2 pl-4 bg-[#1c2023] rounded-lg">
       <div className="text-[#e6e7ec] leading-[34px] font-bold px-7 grid grid-cols-2 gap-[55%] mt-[25px] pb-3">
-        <p className='w-[500px]'>{companyName} Graph Analysis</p>
+        <p className='text-[19px] w-[500px]'>{companyName} Graph Analysis</p>
         <select
           value={selectedGraph}
           onChange={(e) => setSelectedGraph(e.target.value)}
