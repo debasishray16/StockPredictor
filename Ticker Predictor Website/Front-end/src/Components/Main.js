@@ -129,7 +129,7 @@ const Main = () => {
         );
         setMarketCap(data.marketCap || "No market cap available.");
         setCompanyDescription(
-          data.longBusinessSummary || "Failed to fetch company info.",
+          data.longBusinessSummary || "",
         );
         setLogoimg(data.logo_url || "");
         setCompanySite(data.website || "No website available");
@@ -151,10 +151,10 @@ const Main = () => {
         );
         setavg_low_price(data.avg_low_price || "Avg Low price not available");
       } else {
-        setCompanyDescription("Failed to fetch company info.");
+        setCompanyDescription("");
       }
     } catch (error) {
-      setCompanyDescription("An error occurred while fetching company info.");
+      setCompanyDescription("");
     }
   }, []);
 
@@ -185,26 +185,17 @@ const Main = () => {
         <div className="flex-grow flex flex-col overflow-auto pl-4 pr-4">
           {showAnimation ? (
             <>
-              <CompanyDesc
-                companyDescription={companyDescription}
-                logoimg={logoimg}
-                loading={loading}
-              />
-              <h1 className="text-[30px] leading-[34px] font-semibold p-4 pt-[100px] flex justify-center items-center">
-                No Ticker Selected
-              </h1>
+              {!loading && (
+                <h1 className="text-[30px] italic text-[#e6e7ec] leading-[34px] font-semibold p-4 pt-[100px] flex justify-center items-center">
+                  Enter a company ticker to see predictions and insights
+                </h1>
+              )}
               <div className="flex justify-center items-center h-screen">
-                <LoadingAnim />
+                <LoadingAnim loading={loading} />
               </div>
             </>
           ) : (
             <>
-              <CompanyDesc
-                companyDescription={companyDescription}
-                logoimg={logoimg}
-                loading={loading}
-                showAnimation={showAnimation}
-              />
               <CompanyInfo
                 loading={loading}
                 currency={currency}
@@ -217,6 +208,16 @@ const Main = () => {
                 avg_high_price={avg_high_price}
                 avg_low_price={avg_low_price}
               />
+              {companyDescription && (
+                <CompanyDesc
+                  companyDescription={companyDescription}
+                  logoimg={logoimg}
+                  loading={loading}
+                  showAnimation={showAnimation}
+                />
+              )}
+
+
               <StockPredictionChart
                 data={data}
                 loading={loading}

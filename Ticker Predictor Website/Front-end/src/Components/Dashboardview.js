@@ -27,21 +27,21 @@ const Dashboardview = ({ onFetchData, onSelectOption }) => {
     };
 
     return (
-        <div className='flex items-center bg-[#1c2023] justify-between h-[70px] shadow-xl shadow-black px-[25px] flex-shrink-0'>
+        <div className='flex items-center bg-[#1c2023] justify-between h-[70px] z-10 shadow-xl shadow-black px-[25px] flex-shrink-0'>
             <form onSubmit={handleSubmit} className='flex items-center rounded-[5px] '>
                 <input
                     type='text'
                     value={companyCode}
                     onChange={handleInputChange}
-                    className='h-[40px] outline-none border border-[#ccc] border-r-0 focus:outline-none pl-[13px] w-[600px] rounded-l-lg placeholder:text-[14px] placeholder:text-[#000] leading-[20px] font-normal'
-                    placeholder='Enter Company Ticker (e.g., AAPL)'
+                    className='h-[40px] outline-none bg-[#15181d] text-[#e6e7ec] border border-[#e6e7ec] border-r-0 focus:outline-none pl-[13px] w-[600px] rounded-l-lg placeholder:text-[14px] placeholder:text-[#e6e7ec] leading-[20px] font-normal'
+                    placeholder='Enter Company Ticker'
                     required
                 />
 
                 <button
                     type='submit'
                     disabled={loading} // Disable button while loading
-                    className={`h-[40px] px-[14px] flex items-center border border-[#ccc] justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`h-[40px] px-[14px] flex items-center border border-[#e6e7ec] justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                     <FaSearch color='#e6e7ec' />
                 </button>
