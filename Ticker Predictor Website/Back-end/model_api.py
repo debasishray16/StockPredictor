@@ -1,5 +1,5 @@
 import tensorflow as tf
-from flask import Flask, request, jsonify
+from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -8,22 +8,37 @@ from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
+import logging
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
+model = tf.keras.models.load_model('./model/8_15_23_300_LXg.h5', compile=False)
+
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 @app.route('/company_info', methods=['POST'])
-def company_info():
+async def company_info():
     data = request.json
     ticker = data.get('ticker')
 
     if not ticker:
+        logger.warning("Ticker is required but not provided")
         return jsonify({"error": "Ticker is required"}), 400
+
+    logger.info(f"Fetching company info for ticker: {ticker}")
 
     try:
         # Fetch company info using yfinance
         stock = yf.Ticker(ticker)
         info = stock.info
+
+        if not info:
+            logger.error(f"No info available for ticker {ticker}")
+            return jsonify({"error": f"No company info available for ticker {ticker}"}), 404
 
         # Calculate the start date for the last 9 years
         end_date = datetime.now()
@@ -36,23 +51,31 @@ def company_info():
         # Fetch historical data for the last 9 years
         historical_data = stock.history(start=start_date, end=end_date)
         
+        if historical_data.empty:
+            logger.error(f"No historical data available for ticker {ticker} over the last 9 years")
+            return jsonify({"error": f"No historical data available for ticker {ticker}"}), 404
+        
         # Fetch historical data for the last 52 weeks
         historical_data2 = stock.history(start=start_date2, end=end_date2)
 
+        if historical_data2.empty:
+            logger.warning(f"No historical data available for ticker {ticker} over the last 52 weeks")
+            # Continue, as it's not critical
+
         # Get the most recent opening and closing prices
-        latest_opening_price = historical_data['Open'].iloc[-1]
-        latest_closing_price = historical_data['Close'].iloc[-1]
+        latest_opening_price = historical_data['Open'].iloc[-1] if not historical_data.empty else None
+        latest_closing_price = historical_data['Close'].iloc[-1] if not historical_data.empty else None
 
         # Calculate the maximum opening and closing prices till date
-        max_opening_price = historical_data['Open'].max()
-        max_closing_price = historical_data['Close'].max()
+        max_opening_price = historical_data['Open'].max() if not historical_data.empty else None
+        max_closing_price = historical_data['Close'].max() if not historical_data.empty else None
         
         # Calculate average high and low prices over the last 52 weeks
-        avg_high_price = historical_data2['High'].mean()
-        avg_low_price = historical_data2['Low'].mean()
+        avg_high_price = historical_data2['High'].mean() if not historical_data2.empty else None
+        avg_low_price = historical_data2['Low'].mean() if not historical_data2.empty else None
         
-        max_high_price = historical_data2['High'].max()
-        max_low_price = historical_data2['Low'].min()
+        max_high_price = historical_data2['High'].max() if not historical_data2.empty else None
+        max_low_price = historical_data2['Low'].min() if not historical_data2.empty else None
         
         #Company info extraction
         company_name = info.get("longName", "Company name not available.")
@@ -64,9 +87,18 @@ def company_info():
         marketCap = info.get("marketCap", "No market cap available.")
         currency = info.get("currency", "N/A")
         
+        logo_url = None
+
+        if website:
+            domain = website.replace("https://", "").replace("http://", "").split("/")[0]
+            domain = domain.replace("www.", "")
+            
+            logo_url = f"https://www.google.com/s2/favicons?sz=256&domain={domain}"
+        
         # Extract only the longBusinessSummary
         company_summary = {
             "company_name": company_name,
+            "logo_url": logo_url,
             "longBusinessSummary": longBusinessSummary,
             "sector": sector,
             "industry": industry,
@@ -84,12 +116,20 @@ def company_info():
             "avg_low_price": avg_low_price
         }
 
+        print(json.dumps(company_summary))
+
+        logger.info(f"Successfully fetched company info for ticker: {ticker}")
         return jsonify(company_summary)
     except Exception as e:
-        return jsonify({"error": f"Failed to fetch company info for ticker {ticker}: {str(e)}"}), 400
+        logger.error(f"Failed to fetch company info for ticker {ticker}: {str(e)}")
+        return jsonify({"error": f"Failed to fetch company info for ticker {ticker}: {str(e)}"}), 500
+
+
+
+
 
 @app.route('/predict', methods=['POST'])
-def predict():
+async def predict():
     data = request.json
     ticker = data.get('ticker')
     start = '2015-01-01'
@@ -97,18 +137,25 @@ def predict():
     custom_start = data.get('start', '2015-01-01')
     custom_end = data.get('end', '2023-01-01')
  
+    logger.info(f"Starting prediction for ticker: {ticker}")
+ 
     if not ticker:
+        logger.warning("Ticker is required but not provided for prediction")
         return jsonify({"error": "Ticker is required"}), 400
 
     try:
         # Retrieve stock data from Yahoo Finance
+        logger.info(f"Fetching historical data for ticker {ticker} from {start} to {end}")
         df = yf.download(ticker, start=start, end=end)
         df['Date'] = df.index
 
         # Check if sufficient data is available
         if df.empty or len(df) < 100:
+            logger.error(f"Not enough data for ticker {ticker}: {len(df)} rows")
             return jsonify({"error": "Not enough data to calculate moving average."}), 400
+        logger.info(f"Successfully fetched {len(df)} rows of data for ticker {ticker}")
     except Exception as e:
+        logger.error(f"Failed to fetch data for ticker {ticker}: {str(e)}")
         return jsonify({"error": f"Failed to fetch data for ticker {ticker}: {str(e)}"}), 400
 
     # Splitting the data into training and testing
@@ -116,9 +163,6 @@ def predict():
     data_testing = pd.DataFrame(df['Close'][int(len(df) * 0.70):int(len(df))])
 
     scaler = MinMaxScaler(feature_range=(0, 1))
-
-    # Load Model
-    model = tf.keras.models.load_model('./model/8_15_23_300_LXg.h5', compile=False)
 
     # Testing part
     past_100_days = data_training.tail(100)
@@ -134,6 +178,7 @@ def predict():
         y_test.append(input_data[i, 0])
 
     x_test, y_test = np.array(x_test), np.array(y_test)
+    logger.info(f"Running model prediction for historical data")
     y_predicted = model.predict(x_test)
 
     scaler = scaler.scale_
@@ -163,13 +208,17 @@ def predict():
 
     try:
         # Retrieve stock data from Yahoo Finance (8 year before today to today)
+        logger.info(f"Fetching 8-year data for ticker {ticker} from {eight_year_ago} to {today}")
         df2 = yf.download(ticker, start=eight_year_ago, end=today)
         df2['Date'] = df2.index
 
         # Check if sufficient data is available
         if df2.empty or len(df2) < 100:
+            logger.error(f"Not enough 8-year data for ticker {ticker}: {len(df2)} rows")
             return jsonify({"error": "Not enough data to calculate moving average."}), 400
+        logger.info(f"Successfully fetched {len(df2)} rows of 8-year data for ticker {ticker}")
     except Exception as e:
+        logger.error(f"Failed to fetch 8-year data for ticker {ticker}: {str(e)}")
         return jsonify({"error": f"Failed to fetch data for ticker {ticker}: {str(e)}"}), 400
 
     # Prepare data for the model (Last 100 days for input)
@@ -196,6 +245,7 @@ def predict():
     
 
     x_test2, y_test2 = np.array(x_test2), np.array(y_test2)
+    logger.info(f"Running model prediction for 8-year data")
     y_predicted2 = model.predict(x_test2)
     
 
@@ -214,9 +264,11 @@ def predict():
     future_dates = pd.date_range(start=testing_dates2[-1], periods=30, freq='D')
     count = 0
 
+    logger.info(f"Generating 30-day future predictions for ticker {ticker}")
     while count < 30:  # Predict for 30 days
         
         if future_input.shape[0] < 30:
+            logger.error(f"Not enough data for future predictions for ticker {ticker}")
             return jsonify({"error": "Not enough data for future predictions."}), 400
 
         # Ensure future_input is reshaped to (1, 100, 1)
@@ -246,6 +298,7 @@ def predict():
     
     padded_last_8cp = y_test2.flatten().tolist()
 
+    logger.info(f"Prediction completed successfully for ticker {ticker}")
     response_data = {
         'predictions': y_predicted.flatten().tolist(),
         'original': y_test.flatten().tolist(),
