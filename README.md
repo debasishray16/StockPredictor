@@ -137,12 +137,73 @@ docker push ghcr.io/debasishray16/stockpredictor/webapp:latest
 
 ```
 StockPredictor/
-├── Ticker Predictor Website/
-│   ├── Front-end/          # React application
-│   ├── Backend/            # Python Flask/Waitress server
-│   └── models/             # Trained LSTM & XGBoost models
-├── Dockerfile              # Container configuration
-└── README.md              # This file
+│
+├── 📄 README.md                          # Project documentation
+├── 📄 LICENCE                            # MIT License
+├── 📄 .gitignore                         # Git ignore configuration
+├── 📄 docker-compose.yml                 # Docker Compose configuration
+│
+├── 📂 Ticker Predictor Website/          # Main application folder
+│   │
+│   ├── 📂 Front-end/                     # React Frontend Application
+│   │   ├── 📄 package.json               # Node.js dependencies
+│   │   ├── 📄 package-lock.json          # Dependency lock file
+│   │   ├── 📄 tailwind.config.js         # Tailwind CSS configuration
+│   │   ├── 📄 Dockerfile                 # Frontend container config
+│   │   ├── 📄 .dockerignore              # Docker ignore rules
+│   │   ├── 📄 .gitignore                 # Git ignore rules
+│   │   │
+│   │   ├── 📂 public/                    # Static public assets
+│   │   │   ├── 📄 index.html             # Main HTML entry point
+│   │   │   ├── 📄 manifest.json          # PWA manifest
+│   │   │   └── 📄 robots.txt             # SEO robots configuration
+│   │   │
+│   │   └── 📂 src/                       # Source code
+│   │       ├── 📄 index.js               # React entry point
+│   │       ├── 📄 index.css              # Global CSS styles
+│   │       ├── 📄 App.js                 # Main App component
+│   │       ├── 📄 App.css                # App-specific styles
+│   │       ├── 📄 reportWebVitals.js     # Performance monitoring
+│   │       │
+│   │       ├── 📂 Components/            # React Components
+│   │       │   ├── 📄 Main.js            # Main dashboard component
+│   │       │   ├── 📄 Sidebar.js         # Sidebar navigation (70KB)
+│   │       │   ├── 📄 Dashboardview.js   # Dashboard view component
+│   │       │   ├── 📄 StockPredictionChart.js  # Chart visualization
+│   │       │   ├── 📄 LoadingAnim.js     # Loading animation component
+│   │       │   ├── 📄 Spinner.js         # Spinner component
+│   │       │   ├── 📄 aboutModel.js      # Model information component
+│   │       │   ├── 📄 companyInfo.js     # Company details (9KB)
+│   │       │   ├── 📄 companyDesc.js     # Company description
+│   │       │   │
+│   │       │   └── 📂 Styles/            # Component-specific styles
+│   │       │       └── 📄 spinner.css    # Spinner animations
+│   │       │
+│   │       ├── 📂 router/                # Route configuration
+│   │       │   └── 📄 Router.js          # React Router setup
+│   │       │
+│   │       └── 📂 assets/                # Media assets
+│   │           ├── 🎞️ idle.gif          # Idle state animation
+│   │           ├── 🎞️ loading.gif       # Loading animation
+│   │           └── 🎞️ loading2.gif      # Alternative loading animation
+│   │
+│   └── 📂 Back-end/                      # Python Backend Server
+│       ├── 📄 model_api.py               # ML model API (12.7KB)
+│       ├── 📄 waitress_server.py         # WSGI server launcher
+│       ├── 📄 requirements.txt           # Python dependencies
+│       ├── 📄 Dockerfile                 # Backend container config
+│       ├── 📄 .dockerignore              # Docker ignore rules
+│       │
+│       └── 📂 model/                     # Trained ML Models
+│           ├── 🤖 8_15_23_125_LXg.h5     # LSTM model (2.2MB)
+│           └── 🤖 8_15_23_300_LXg.h5     # LSTM model (2.2MB)
+│
+├── 📂 assets/                            # Project assets
+│   ├── 📂 images/                        # Documentation images
+│   │   ├── 🖼️ Website_Preview.png       # Website screenshot
+│   │   └── 🖼️ terminal_screenshot.png   # Terminal output screenshot
+│   │
+│   └── 📂 dataset/                       # Training datasets (optional)
 ```
 
 ## 🔗 Related Resources
