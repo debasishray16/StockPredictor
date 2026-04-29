@@ -107,23 +107,27 @@ Access the app via the link provided in the terminal output.
 ### Step-by-Step Guide
 
 1. **Create a Docker image replica with a new tag:**
-   ```bash
+
+```bash
 docker tag debasishray/streamlit-app:v1.0 webapp
 ```
 
 2. **Tag for GitHub Container Registry:**
-   ```bash
+   
+```bash
 docker tag webapp ghcr.io/debasishray16/stockpredictor/webapp:latest
 docker image ls
 ```
 
 3. **Authenticate with GitHub Packages:**
-   ```bash
+   
+```bash
 echo "YOUR_PAT_TOKEN" | docker login ghcr.io -u debasishray16 --password-stdin
 ```
 
 4. **Push to GitHub Packages:**
-   ```bash
+
+```bash
 docker push ghcr.io/debasishray16/stockpredictor/webapp:latest
 ```
 
@@ -137,7 +141,6 @@ StockPredictor/
 │   ├── Front-end/          # React application
 │   ├── Backend/            # Python Flask/Waitress server
 │   └── models/             # Trained LSTM & XGBoost models
-├── Ticker Streamlit App/   # Streamlit web interface
 ├── Dockerfile              # Container configuration
 └── README.md              # This file
 ```
