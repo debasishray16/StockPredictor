@@ -1,132 +1,171 @@
-# About
+# Stock Ticker Analysis and Prediction System using Stacked LSTM
 
-About this project titled "Stock Ticker Analysis and Prediction System using Stacked LSTM" or **Ticker-Prediction System**. It works on LSTM architecture which is an advanced version of RNN (Type of Neural Navigated Network).
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-Deep%20Learning-orange)](https://www.tensorflow.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-Ensemble-red)](https://xgboost.readthedocs.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Web%20App-green)](https://streamlit.io/)
+[![React](https://img.shields.io/badge/React-Frontend-61dafb)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-- In this project, we have incorporated different data-preprocessing techniques for continuous dataset value.
-- Also, in this project, we have incorporated XG-Boost as ensemble method to increase accuracy of following LSTM model.
+## 📋 About
 
-**NOTE: All test and research work are done and are pushed in different repository related to this project trained on different epoch cycles and parameters, which are usable with project.**
+**Ticker-Prediction System** is an advanced machine learning project that leverages **LSTM (Long Short Term Memory)** neural networks combined with **XGBoost** ensemble methods to predict stock market trends using time-series analysis.
 
---> **<a href="https://github.com/debasishray16/Stock-Prediction-Models"> Link to Model Training Repository</a>**
+### Key Features
 
-## Description
+- 🤖 **Deep Learning Architecture**: Stacked LSTM model for capturing temporal dependencies in stock data
+- 📊 **Data Preprocessing**: Advanced techniques for continuous dataset normalization and transformation
+- 🚀 **Ensemble Method**: XGBoost integration to enhance prediction accuracy
+- 🎨 **Dual Interface**: Both Streamlit web app and React-based frontend
+- 🐳 **Docker Support**: Containerized deployment with version tracking
+- 📈 **Time-Series Prediction**: Sophisticated forecasting for financial data
 
-- Our project works on concepts of deep learning to predict values based on time-series model. It includes use of LSTM (Long Short Term Memory) with XG-Boost to enhance the performance of prediction. Also, it takes tickers as input and gives prediction results.
+> **Note**: All research, testing, and model training work are maintained in a [separate repository](https://github.com/debasishray16/Stock-Prediction-Models) with different epoch cycles and parameters.
 
-- This repository invloves deployment of model with **two-interfaces**.
-One with <kbd> Streamlit-App </kbd>  [**[Link](https://ticker-prediction-app-tpa.streamlit.app/)**] and <kbd> React App </kbd>
+## 📖 Description
 
-- For versioning of project deployement,We have created docker images for respective project to track and observe major changes made in the application.
-Each of these images are tagged with different versions which can be easily pulled into your system.
+This project combines cutting-edge deep learning techniques with practical deployment strategies:
 
-## Installation
+- **Core Technology**: LSTM networks with XGBoost ensemble methods for superior prediction performance
+- **Multiple Interfaces**:
+  - [**Streamlit Application**](https://ticker-prediction-app-tpa.streamlit.app/) - Quick web-based interface
+  - **React Application** - Full-featured frontend with advanced UI/UX
+- **Containerization**: Docker images for consistent deployment across environments with semantic versioning
 
-### 1. Running locally after cloning
+## 🚀 Getting Started
 
-To run this project as website on your local system.Follow the steps -
+### Prerequisites
 
-- Navigate to <kbd>Ticker Predictor Website</kbd> folder.
+- Python 3.8+
+- Node.js 14+
+- Docker (optional, for containerized deployment)
+- Git
+
+### 1. Local Installation
+
+#### Frontend (React)
+
+Navigate to the Ticker Predictor Website folder:
 
 ```bash
 cd "Ticker Predictor Website"
-```
-
-- Now, navigate to <kbd> Front-end</kbd> folder.
-
-```bash
 cd "Front-end"
-```
-
-- Run command in  if project is cloned for first time. *This will install necessary node_modules folder in current folder.*
-
-```bash
 npm install
-```
-
-- Now to start the development server in React. Run the command:
-
-```bash
 npm run start
 ```
 
-- Simultaneously, Run command in **another terminal** to start **backend server** created on python.
-- Navigate to <kbd> Backend</kbd> folder and run bash command.
+The React app will be available at `https://localhost:3000`
+
+#### Backend (Python)
+
+In a separate terminal, navigate to the Backend folder:
 
 ```bash
+cd "Ticker Predictor Website"
+cd "Backend"
 python waitress_server.py
 ```
 
-![terminal_Screenshot](assets/images/terminal_screenshot.png)
+The backend server will connect with the React frontend automatically.
 
-```text
-Note: This will start the server and will connect with React website directly, running on https://localhost/3000.
+**Visual Guide:**
+
+```
+Terminal Output Example:
+✓ Backend running on http://localhost:5000
+✓ Frontend running on http://localhost:3000
+✓ Connected and ready for predictions
 ```
 
-It should look like this after starting the server.
+### 2. Docker Deployment
 
-![website_Preview](assets/images/Website_Preview.png)
+#### Option A: React + Python Backend
 
-### 2. Running project using Docker
-
-1. To run website located in <kbd> Ticker Predictor Website</kbd>. Follow these steps:
-
-- Open docker desktop and start the docker engine.
-- Open **one terminal** for backend and open **another terminal** for frontend image to run and execute container.
-
+**Terminal 1 - Backend:**
 ```bash
-# Terminal 1
-# this will pull and run latest deployed frontend container.
-docker run -p 3000:3000 debasishray/predictor-frontend:latest
-```
-
-```bash
-# Terminal 2
-# this will pull and run latest deployed backend container
 docker run -p 5000:5000 debasishray/predictor-backend:latest
 ```
 
-- Now, navigate to any web-browser and type:
-
-```text
-https://localhost/3000
+**Terminal 2 - Frontend:**
+```bash
+docker run -p 3000:3000 debasishray/predictor-frontend:latest
 ```
 
-2. To run streamlit-webapp located in <kbd> Ticker Streamlit App</kbd> deployed on Docker. Follow these steps:
+Then navigate to: `https://localhost:3000`
 
-- Open docker desktop and start the docker engine.
-- Open terminal and then, type the command:
+#### Option B: Streamlit Application
 
 ```bash
-# this will run latest deployed streamlit-app container
 docker run -p 8501:8501 debasishray/streamlit-app:latest
 ```
 
-- Then, click on link provided on docker terminal.
+Access the app via the link provided in the terminal output.
 
-## Steps to deploy on Github Packages
+## 🐳 Docker Image Deployment to GitHub Packages
 
-1. Create a replica of Docker image with different tag.
-2. Check the image created.
-3. Authenticate by using **PAT (Personal Access Token)**.
-4. Push that image in GitHub Packages.
+### Step-by-Step Guide
 
-```bash
+1. **Create a Docker image replica with a new tag:**
+   ```bash
 docker tag debasishray/streamlit-app:v1.0 webapp
+```
 
+2. **Tag for GitHub Container Registry:**
+   ```bash
 docker tag webapp ghcr.io/debasishray16/stockpredictor/webapp:latest
 docker image ls
+```
 
-# For authentication
-echo "pat-value" | docker login ghcr.io -u debasishray16 --password-stdin
+3. **Authenticate with GitHub Packages:**
+   ```bash
+echo "YOUR_PAT_TOKEN" | docker login ghcr.io -u debasishray16 --password-stdin
+```
 
-# ghcr.io/<username>/<repository>
+4. **Push to GitHub Packages:**
+   ```bash
 docker push ghcr.io/debasishray16/stockpredictor/webapp:latest
 ```
 
-### Contributors
+> **Format**: `ghcr.io/<username>/<repository>/<image>:tag`
+
+## 📊 Project Structure
+
+```
+StockPredictor/
+├── Ticker Predictor Website/
+│   ├── Front-end/          # React application
+│   ├── Backend/            # Python Flask/Waitress server
+│   └── models/             # Trained LSTM & XGBoost models
+├── Ticker Streamlit App/   # Streamlit web interface
+├── Dockerfile              # Container configuration
+└── README.md              # This file
+```
+
+## 🔗 Related Resources
+
+- **Model Training Repository**: [Stock-Prediction-Models](https://github.com/debasishray16/Stock-Prediction-Models)
+- **Live Streamlit App**: [Ticker Prediction - Streamlit](https://ticker-prediction-app-tpa.streamlit.app/)
+- **Model Research**: Various epoch cycles and parameter configurations available in training repo
+
+## 👥 Contributors
 
 <div align="center">
  <a href="https://github.com/debasishray16/StockPredictor/graphs/contributors">
    <img src="https://contrib.rocks/image?repo=debasishray16/StockPredictor" />
  </a>
 </div>
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🤝 Support & Contributing
+
+For questions, suggestions, or issues:
+- Open an [Issue](https://github.com/debasishray16/StockPredictor/issues)
+- Check the [Model Training Repository](https://github.com/debasishray16/Stock-Prediction-Models) for research details
+
+---
+
+**Last Updated**: 2026-04-29 | **Status**: Active Development
