@@ -5,7 +5,7 @@ services:
       - "5000:5000"
     image: debasishray/predictor-backend:v1.0
   
-  # depends_on must be placed at last beacuse it depends upon backend.
+  # depends_on must be placed at last because it depends upon backend.
   frontend:
     build: Frontend
     ports:
