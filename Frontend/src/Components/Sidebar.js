@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { IoChevronDown, IoChevronUp } from "react-icons/io5";
-import loading1 from "../assets/loading.gif";
 
 const Sidebar = ({
+  setCompanySelected,
+  initialLoad,
   loading,
   sector,
   industry,
@@ -12,6 +12,23 @@ const Sidebar = ({
   companySite,
   currency,
 }) => {
+
+  const tickerList = [
+    { name: "Apple Inc.", ticker: "AAPL" },
+    { name: "Microsoft Corporation", ticker: "MSFT" },
+    { name: "Tesla Inc.", ticker: "TSLA" },
+    { name: "Amazon.com Inc.", ticker: "AMZN" },
+    { name: "Alphabet Inc. (Google)", ticker: "GOOGL" },
+    { name: "Meta Platforms Inc.", ticker: "META" },
+    { name: "NVIDIA Corporation", ticker: "NVDA" },
+    { name: "Netflix Inc.", ticker: "NFLX" },
+
+    { name: "Reliance Industries", ticker: "RELIANCE.NS" },
+    { name: "Tata Consultancy Services", ticker: "TCS.NS" },
+    { name: "Infosys", ticker: "INFY.NS" },
+    { name: "HDFC Bank", ticker: "HDFCBANK.NS" },
+  ];
+
   const [width, setWidth] = useState(360);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -637,7 +654,10 @@ const Sidebar = ({
         </div>
 
         <div className="px-5 w-full">
-          {companyName && (
+          <div
+            className={`overflow-hidden transition-all duration-500 ease-in-out ${(companyName && (!loading || initialLoad)) ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+              }`}
+          >
             <div className="flex flex-col gap-[10px]">
               <div
                 className="flex justify-between items-center leading-7 rounded-t-lg"
@@ -711,6 +731,16 @@ const Sidebar = ({
                           <div className="h-2 bg-slate-700 rounded col-span-2"></div>
                         </div>
                         <div className="h-2 bg-slate-700 rounded"></div>
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-4 py-1">
+                      <div className="h-2 bg-slate-700 rounded"></div>
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+                          <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                        </div>
+                        {/* <div className="h-2 bg-slate-700 rounded"></div> */}
                       </div>
                     </div>
                   </div>
@@ -975,14 +1005,35 @@ const Sidebar = ({
                 </button>
               )}
             </div>
-          )}
+          </div>
+          <div className="mt-3 transition-all animate">
+            <h2 className="text-[#e6e7ec] font-bold text-[18px] mb-3">
+              Available Tickers
+            </h2>
+
+            <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-2">
+              {tickerList.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => setCompanySelected(item.ticker)}
+                  className="cursor-pointer bg-[#2f3032] hover:bg-[#3a3b3d] transition-all p-3 rounded-lg"
+                >
+                  <p className="text-[#e6e7ec] font-semibold text-[14px]">
+                    {item.name}
+                  </p>
+                  <p className="text-gray-400 text-[12px]">
+                    {item.ticker}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       <div
-        className={`flex flex-col items-center justify-center w-3 cursor-ew-resize ${
-          isResizing ? "bg-gray-800" : ""
-        }`}
+        className={`flex flex-col items-center justify-center w-3 cursor-ew-resize ${isResizing ? "bg-[#141719]" : ""
+          }`}
         onMouseDown={handleMouseDown}
       >
         <span className="w-1 h-1 bg-gray-500 rounded-full mb-1"></span>

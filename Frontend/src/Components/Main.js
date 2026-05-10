@@ -4,9 +4,8 @@ import Sidebar from "./Sidebar";
 import CompanyDesc from "./companyDesc";
 import StockPredictionChart from "./StockPredictionChart";
 import CompanyInfo from "./companyInfo";
-import LoadingAnim from "./LoadingAnim";
+import LoadingAnim from "./Loaders/LoadingAnim";
 import AboutModel from "./aboutModel";
-import idle from "../assets/idle.gif";
 
 const Main = () => {
   const [data, setData] = useState([]);
@@ -32,6 +31,10 @@ const Main = () => {
   const [avg_low_price, setavg_low_price] = useState("");
   const [lastClosingPrice, setLastClosingPrice] = useState("");
   const [combinedDates, setcombinedDates] = useState([]);
+
+  const [initialLoad, setInitialLoad] = useState(false);
+
+  const [companySelected, setCompanySelected] = useState("");
 
   // Fetch data from the backend for stock predictions
   const fetchData = useCallback(async (ticker) => {
@@ -98,6 +101,7 @@ const Main = () => {
 
       // Set additional data for last closing price, 1-year predictions, etc.
       setShowAnimation(false);
+      setInitialLoad(true);
       setcombinedDates(combined_dates);
       setLastClosingPrice(original8Year);
     } catch (error) {
@@ -167,6 +171,8 @@ const Main = () => {
   return (
     <div className="h-screen flex overflow-hidden bg-[#13161b]">
       <Sidebar
+        setCompanySelected={setCompanySelected}
+        initialLoad={initialLoad}
         loading={loading}
         sector={sector}
         industry={industry}
@@ -178,6 +184,7 @@ const Main = () => {
       />
       <div className="flex-grow flex flex-col overflow-auto w-full">
         <Dashboardview
+          companySelected={companySelected}
           onFetchData={handleFetchData}
           className="pt-0 px-0 top-0 "
           onSelectOption={handleFetchData}
@@ -216,7 +223,6 @@ const Main = () => {
                   showAnimation={showAnimation}
                 />
               )}
-
 
               <StockPredictionChart
                 data={data}
