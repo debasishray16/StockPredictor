@@ -2,31 +2,43 @@ import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import AboutModel from "./aboutModel";
 
-const Dashboardview = ({ companySelected, onFetchData, onSelectOption }) => {
+const Dashboardview = ({
+    companySelected,
+    onFetchData,
+    onSelectOption,
+}) => {
     const [companyCode, setCompanyCode] = useState(companySelected || "");
     const [updatedMessage, setUpdatedMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showAbout, setShowAbout] = useState(false);
 
     const handleInputChange = (event) => {
         setCompanyCode(event.target.value);
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission
-        setLoading(true); // Start loading
+        event.preventDefault();
+
+        setLoading(true);
 
         try {
-            await onFetchData(companyCode); // Call fetchData from props to fetch company info
+            await onFetchData(companyCode);
+
+            console.log(`Ticker submitted successfully: ${companyCode}`);
+
             setUpdatedMessage(
-                console.log(`Ticker submitted successfully: ${companyCode}`),
+                `Ticker submitted successfully: ${companyCode}`,
             );
         } catch (error) {
             console.error("Error submitting ticker:", error);
+
             const errorMessage =
-                error.response?.data?.error || "Error submitting ticker";
+                error.response?.data?.error ||
+                "Error submitting ticker";
+
             setUpdatedMessage(errorMessage);
         } finally {
-            setLoading(false); // End loading
+            setLoading(false);
         }
     };
 
@@ -39,6 +51,7 @@ const Dashboardview = ({ companySelected, onFetchData, onSelectOption }) => {
 
     const handleAutoFetch = async (ticker) => {
         setLoading(true);
+
         try {
             await onFetchData(ticker);
         } catch (error) {
@@ -52,7 +65,7 @@ const Dashboardview = ({ companySelected, onFetchData, onSelectOption }) => {
         <div className="flex items-center bg-[#1c2023] justify-between h-[70px] z-10 shadow-xl shadow-black px-[25px] flex-shrink-0">
             <form
                 onSubmit={handleSubmit}
-                className="flex items-center rounded-[5px] "
+                className="flex items-center rounded-[5px]"
             >
                 <input
                     type="text"
@@ -66,50 +79,74 @@ const Dashboardview = ({ companySelected, onFetchData, onSelectOption }) => {
                 <button
                     type="submit"
                     disabled={loading}
-                    className={`h-[40px] px-[14px] flex items-center border border-[#e6e7ec] justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px] ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`h-[40px] px-[14px] flex items-center border border-[#e6e7ec] justify-center rounded-tr-[5px] rounded-br-[5px] ${
+                        loading
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                    }`}
                 >
                     <FaSearch color="#e6e7ec" />
                 </button>
-                <p className="ml-2 text-[#e6e7ec]">{updatedMessage}</p>
+
+                <p className="ml-2 text-[#e6e7ec] text-sm">
+                    {updatedMessage}
+                </p>
             </form>
-            <button className="relative group">
-                <svg width={20} height={20} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                        id="SVGRepo_tracerCarrier"
+
+            <div
+                onMouseEnter={() => setShowAbout(true)}
+                onMouseLeave={() => setShowAbout(false)}
+                className="relative"
+            >
+                <svg
+                    width={20}
+                    height={20}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="cursor-pointer"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="#e6e7ec"
+                        strokeWidth="1.5"
+                    />
+
+                    <path
+                        d="M12 17V11"
+                        stroke="#e6e7ec"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="#e6e7ec"
-                            strokeWidth="1.5"
-                        ></circle>{" "}
-                        <path
-                            d="M12 17V11"
-                            stroke="#e6e7ec"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                        ></path>{" "}
-                        <circle
-                            cx="1"
-                            cy="1"
-                            r="1"
-                            transform="matrix(1 0 0 -1 11 9)"
-                            fill="#e6e7ec"
-                        ></circle>{" "}
-                    </g>
+                    />
+
+                    <circle
+                        cx="1"
+                        cy="1"
+                        r="1"
+                        transform="matrix(1 0 0 -1 11 9)"
+                        fill="#e6e7ec"
+                    />
                 </svg>
-                <div className="absolute bg-[#1c2023] right-0 top-[45px] w-[350px] 
-                    text-white rounded-lg shadow-xl shadow-black p-4
-                    opacity-0 group-hover:opacity-100 transition duration-200 z-50">
-                    <AboutModel />
-                </div>
-            </button>
+
+                {showAbout && (
+                    <div
+                        className="
+                            absolute right-0 top-[45px]
+                            w-[350px]
+                            bg-[#1c2023]
+                            text-white
+                            rounded-lg
+                            shadow-xl shadow-black
+                            p-4
+                            z-50
+                        "
+                    >
+                        <AboutModel />
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
