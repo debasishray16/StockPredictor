@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
-import Spinner from './Spinner';
 
 const StockPredictionChart = ({ data, loading, errorMessage, currency, companyName }) => {
   const [selectedGraph, setSelectedGraph] = useState('Original vs Prediction');
@@ -61,7 +60,24 @@ const StockPredictionChart = ({ data, loading, errorMessage, currency, companyNa
         </div>
         <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isGraphCollapsed ? 'max-h-0 pb-0' : 'max-h-screen pb-3'}`}>
           {loading ? (
-            <p className="text-[#e6e7ec] text-[15px] leading-[34px] font-normal px-7 flex items-center justify-center"><Spinner /></p>
+            <div className="text-[#e6e7ec] w-full min-h-[500px] text-[15px] leading-[34px] font-normal px-7 flex items-center justify-center">
+              <div class="loader">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                  <defs>
+                    <mask id="clipping">
+                      <polygon points="0,0 100,0 100,100 0,100" fill="black"></polygon>
+                      <polygon points="25,25 75,25 50,75" fill="white"></polygon>
+                      <polygon points="50,25 75,75 25,75" fill="white"></polygon>
+                      <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                      <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                      <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                      <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+                    </mask>
+                  </defs>
+                </svg>
+                <div class="box"></div>
+              </div>
+            </div>
           ) : errorMessage ? (
             <p className="text-red-500 p-2" aria-live="polite">{errorMessage}</p>
           ) : graphData.length > 0 ? (
